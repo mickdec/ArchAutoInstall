@@ -251,9 +251,6 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
 chmod 777 /mnt/AutoInstall2.sh
 
-echo -e '\e[32m=> \e[94mRemoving AutoInstall2.sh\e[39m'
-rm -Rf /mnt/AutoInstall2.sh
-
 echo -e '\e[32m=> \e[94m Starting AutoInstall2.sh in chroot\e[39m'
 arch-chroot /mnt ./AutoInstall2.sh
 
