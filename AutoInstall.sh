@@ -7,7 +7,7 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
-VARTYPE="BIOS"
+VARTYPE="UEFI"
 ENCRYPT="NO"
 
 # if [[ "$1" == "-GONNAGOFAST" ]]
@@ -57,6 +57,7 @@ else
         read VARHOSTNAME
 fi
 echo -e '\e[31mVariables resume :\e[39m'
+echo -e '\e[31mInstall Type :\e[39m' $VARTYPE
 echo -e '\e[31mTimeZone :\e[39m' $VARTIMEZONE
 echo -e '\e[31mKeyboard Layout :\e[39m' $VARKBDLAYOUT
 echo -e '\e[31mEFI Size :\e[39m' $VAREFISIZE
