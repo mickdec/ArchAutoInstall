@@ -260,5 +260,8 @@ arch-chroot /mnt ./AutoInstall2.sh
 echo -e '\e[32m=> \e[94m Unmounting /mnt\e[39m'
 umount -R /mnt #Unmount every partitions
 
+echo -e '\e[32mInstallation Finished without errors, restarting in 10 Seconds\e[39m'
+sleep 10
+
 echo -e '\e[32mShuting down now\e[39m'
 shutdown now #shutdown
