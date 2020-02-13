@@ -7,6 +7,9 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
+VARTYPE="UEFI"
+
+# if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
         VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
@@ -78,84 +81,166 @@ echo -e '\e[32m=> \e[94m Set time zone to '$VARTIMEZONE'\e[39m'
 timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
-(
-#EFI
-echo n      #New Partition
-echo p      #Primary
-echo 1      #First partition
-echo        #Default Sector start
-echo +$VAREFISIZE  #512MiB
-echo t      #Change type
-echo ef     #EFI
-#SWAP
-echo n      #New Partition
-echo p      #Primary
-echo 2      #Second partition
-echo        #Default Sector start
-echo +$VARSWAPSIZE    #5Gigas
-echo t      #Change type
-echo 2      #Second partition
-echo 82     #Linux SWAP
-#ROOT
-echo n      #New Partition
-echo p      #Primary
-echo 3      #Third partition
-echo        #Default Sector start
-# if [[ "$VARROOTSIZE" == "ENDSECTOR" ]]
-# then
-#         echo 
-# else
-#         echo $VARROOTSIZE
-# fi
-echo 
-echo t      #Change type
-echo 3      #Third partition
-echo 83     #Linux
-#WRITE
-echo w
-) | sudo fdisk /dev/sda #Start fdisk with all preceding commands
+uefi_parts(){
+        (
+        #EFI
+        echo n      #New Partition
+        echo p      #Primary
+        echo 1      #First partition
+        echo        #Default Sector start
+        echo +$VAREFISIZE  #512MiB
+        echo t      #Change type
+        echo ef     #EFI
+        #SWAP
+        echo n      #New Partition
+        echo p      #Primary
+        echo 2      #Second partition
+        echo        #Default Sector start
+        echo +$VARSWAPSIZE    #5Gigas
+        echo t      #Change type
+        echo 2      #Second partition
+        echo 82     #Linux SWAP
+        #ROOT
+        echo n      #New Partition
+        echo p      #Primary
+        echo 3      #Third partition
+        echo        #Default Sector start
+        echo 
+        echo t      #Change type
+        echo 3      #Third partition
+        echo 83     #Linux
+        #WRITE
+        echo w
+        ) | sudo fdisk /dev/sda #Start fdisk with all preceding commands
+}
+bios_parts(){
+        (
+        #MBR
+        echo n      #New Partition
+        echo p      #Primary
+        echo 1      #First partition
+        echo        #Default Sector start
+        echo +$VAREFISIZE    #512MiB
+        echo t      #Change type
+        echo 4      #Linux SWAP
+        #SWAP
+        echo n      #New Partition
+        echo p      #Primary
+        echo 2      #Second partition
+        echo        #Default Sector start
+        echo +$VARSWAPSIZE    #5Gigas
+        echo t      #Change type
+        echo 2      #Second partition
+        echo 82     #Linux SWAP
+        #ROOT
+        echo n      #New Partition
+        echo p      #Primary
+        echo 3      #Third partition
+        echo        #Default Sector start
+        echo 
+        echo t      #Change type
+        echo 3      #Third partition
+        echo 83     #Linux
+        #WRITE
+        echo w
+        ) | sudo fdisk /dev/sda #Start fdisk with all preceding commands
+}
 
-if [[ "$ENCRYPT" == "YES" ]]
+if [[ "$VARTYPE" == "UEFI" ]]
 then
-        echo -e '\e[32m=> \e[94m Encrypting /dev/sda3 PLEASE ENTER A PASSWORD\e[39m'
-        cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda3 #Encrypt /root
-
-        echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
-        cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda3 c_sda3 #Open /root and create mapper
+        uefi_parts
+else
+        bios_parts
 fi
 
-echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
-mkfs.fat -F32 /dev/sda1 #Formating EFI Fat32
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
-        echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
-        mkfs.ext4 /dev/mapper/c_sda3 #Formating Encrypted /root EXT4
-else
-        echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
-        mkfs.ext4 /dev/sda3 #Formating /root EXT4
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+                echo -e '\e[32m=> \e[94m Encrypting /dev/sda3 PLEASE ENTER A PASSWORD\e[39m'
+                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda3 #Encrypt /root
+                echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
+                cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda3 c_sda3 #Open /root and create mapper
+        else
+                echo -e '\e[32m=> \e[94m Encrypting /dev/sda2 PLEASE ENTER A PASSWORD\e[39m'
+                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda2 #Encrypt /root
+                echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
+                cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda2 c_sda2 #Open /root and create mapper
+        fi
 fi
 
-echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-mkswap /dev/sda2 #Setting Swap for SWAP Partition
-
-echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
-swapon /dev/sda2 #Enabling SWAP
+if [[ "$VARTYPE" == "UEFI" ]]
+then 
+                echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
+                mkfs.fat -F32 /dev/sda1 #Formating EFI Fat32
+fi
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
-        echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
-        mount /dev/mapper/c_sda3 /mnt #Mounting Encrypted root
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+                echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                mkfs.ext4 /dev/mapper/c_sda3 #Formating Encrypted /root EXT4
+        else
+                echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                mkfs.ext4 /dev/mapper/c_sda2 #Formating Encrypted /root EXT4
+        fi
 else
-        echo -e '\e[32m=> \e[94m Mounting root\e[39m'
-        mount /dev/sda3 /mnt #Mounting root
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+                echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                mkfs.ext4 /dev/sda3 #Formating /root EXT4
+        else
+                echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                mkfs.ext4 /dev/sda2 #Formating /root EXT4
+        fi
+fi
+
+if [[ "$VARTYPE" == "UEFI" ]]
+then
+        echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+        mkswap /dev/sda2 #Setting Swap for SWAP Partition
+
+        echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+        swapon /dev/sda2 #Enabling SWAP
+else
+        echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+        mkswap /dev/sda1 #Setting Swap for SWAP Partition
+
+        echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+        swapon /dev/sda1 #Enabling SWAP
+fi
+
+if [[ "$ENCRYPT" == "YES" ]]
+then
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+                echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                mount /dev/mapper/c_sda3 /mnt #Mounting Encrypted root
+        else
+                echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                mount /dev/mapper/c_sda2 /mnt #Mounting Encrypted root
+        fi
+else
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+                echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                mount /dev/sda3 /mnt #Mounting root
+        else
+                echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                mount /dev/sda2 /mnt #Mounting root
+        fi
 fi
 
 echo -e '\e[32m=> \e[94m Creating /boot Directory\e[39m'
 mkdir /mnt/boot #Creating /boot Directory
 
-echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-mount /dev/sda1 /mnt/boot #Mounting EFI to /boot
+if [[ "$VARTYPE" == "UEFI" ]]
+then
+        echo -e '\e[32m=> \e[94m Mount EFI\e[39m'
+        mount /dev/sda1 /mnt/boot #Mounting EFI to /boot
+fi
 
 if [[ "$VARTIMEZONE" == "Europe/Paris" ]]
 then
@@ -225,10 +310,17 @@ echo "echo -e '\e[32m=> \e[94m Create mkinitcpio\e[39m'
 mkinitcpio -P #Create mkinitcpio
 
 echo -e '\e[32m=> \e[94m Change root password, Please Enter a ROOT password\e[39m'
-passwd #Change root password
+passwd #Change root password" >> /mnt/AutoInstall2.sh
 
-echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
+if [[ "$VARTYPE" == "UEFI" ]]
+then
+        echo "echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
 grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB #Install Bootloader" >> /mnt/AutoInstall2.sh
+else
+        echo "echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
+grub-install --target=i386-pc --no-floppy --recheck /dev/sda #Install Bootloader" >> /mnt/AutoInstall2.sh
+fi
+
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
@@ -236,11 +328,18 @@ then
 sed -i 's/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/g' /etc/default/grub #Enabling Cryptodisk in GRUB
 
 echo -e '\e[32m=> \e[94m Adding Preload_modules in GRUB\e[39m'
-sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks cryptodisk\"/g' /etc/default/grub #Adding Preload_modules in GRUB
+sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks cryptodisk\"/g' /etc/default/grub #Adding Preload_modules in GRUB" >> /mnt/AutoInstall2.sh
 
-echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+        if [[ "$VARTYPE" == "UEFI" ]]
+        then
+        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
 GUIDMAPPER=$(blkid | grep ^/dev/sda3 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0:\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+        else
+                echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+GUIDMAPPER=$(blkid | grep ^/dev/sda2 | awk -F "\"" '{print $2}') #Get device GUID
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0:\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+        fi
 fi
 
 echo "echo -e '\e[32m=> \e[94m Create grub config file\e[39m'
