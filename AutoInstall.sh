@@ -261,7 +261,7 @@ echo -e '\e[32m=> \e[94m Unmounting /mnt\e[39m'
 umount -R /mnt #Unmount every partitions
 
 echo -e '\e[32mInstallation Finished without errors, shutdown in 10 Seconds\e[39m'
-echo -e "\e[32mDon\'t forget to remove your liveCD\e[39m"
+echo -e "\e[32mDon't forget to remove your liveCD\e[39m"
 sleep 10
 
 echo -e '\e[32mShuting down now\e[39m'
