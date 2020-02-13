@@ -4,6 +4,7 @@
 # Contact : https://github.com/mickdec       #
 ##############################################
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
+echo -e '\e[32mTHIS INSTALLATION IS FO UEFI ONLY.'
 echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
