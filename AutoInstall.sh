@@ -7,9 +7,6 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
-VARTYPE="UEFI"
-ENCRYPT="NO"
-
 # if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
@@ -68,6 +65,12 @@ echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
 echo -e '\e[32mTHIS INSTALLATION IS FOR \e[94mUEFI ONLY.\e[32m'
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
+
+if [[ "$VARTYPE" == "BIOS" && "$ENCRYPT" == "YES" ]]
+then
+        echo "Didn't supporting BIOS with encrypted partition atm..."
+        exit
+fi
 
 if [[ "$VARKBDLAYOUT" == "azerty" ]]
 then
@@ -157,7 +160,7 @@ then
         else
                 echo -e '\e[32m=> \e[94m Encrypting /dev/sda2 PLEASE ENTER A PASSWORD\e[39m'
                 cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda2 #Encrypt /root
-                echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
+                echo -e '\e[32m=> \e[94m Openning /dev/sda2\e[39m'
                 cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda2 c_sda2 #Open /root and create mapper
         fi
 fi
@@ -246,10 +249,10 @@ fi
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt base linux linux-firmware sudo nano dhcpcd grub efibootmgr #Installing Linux and all additionnal packages to /
+        pacstrap /mnt base linux linux-firmware sudo vim dhcpcd grub efibootmgr #Installing Linux and all additionnal packages to /
 else
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt base linux linux-firmware sudo nano dhcpcd grub #Installing Linux and all additionnal packages to /
+        pacstrap /mnt base linux linux-firmware sudo vim dhcpcd grub #Installing Linux and all additionnal packages to /
 fi
 
 echo -e '\e[32m=> \e[94m Generate fstab\e[39m'
@@ -315,8 +318,9 @@ then
         echo "echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
 grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB #Install Bootloader" >> /mnt/AutoInstall2.sh
 else
+        #GRUB Install Error HERE with BIOS+ENCRYPT, Dont know why.
         echo "echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
-grub-install --target=i386-pc --no-floppy --recheck /dev/sda #Install Bootloader" >> /mnt/AutoInstall2.sh
+grub-install --target=i386-pc /dev/sda #Install Bootloader" >> /mnt/AutoInstall2.sh 
 fi
 
 
