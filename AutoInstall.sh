@@ -1,8 +1,8 @@
-##############################################
-# Arch AutoInstaller script with / encryption#
-# Author : DECELLE Mickael                   #
-# Contact : https://github.com/mickdec       #
-##############################################
+########################################################
+# Arch AutoInstaller script with / encryption          #
+# Author : DECELLE Mickael                             #
+# Contact : https://github.com/mickdec/ArchAutoInstall #
+########################################################
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
