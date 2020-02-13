@@ -61,7 +61,7 @@ echo -e '\e[31mSWAP Size :\e[39m' $VARSWAPSIZE
 echo -e '\e[31m/ Size :\e[39m' $VARROOTSIZE
 echo -e '\e[31mEncrypting :\e[39m' $ENCRYPT
 echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
-echo -e '\e[32mTHIS INSTALLATION IS FO UEFI ONLY.'
+echo -e '\e[32mTHIS INSTALLATION IS FOR \e[94mUEFI ONLY.\e[32m'
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
 
