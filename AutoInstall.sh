@@ -4,8 +4,8 @@
 # Contact : https://github.com/mickdec       #
 ##############################################
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
-echo -e '\e[32mTHIS INSTALLATION IS FO UEFI ONLY.'
-echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
+echo -e '\e[32mHello M. LEONARD this script is fast by default'
+# echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
@@ -61,6 +61,7 @@ echo -e '\e[31mSWAP Size :\e[39m' $VARSWAPSIZE
 echo -e '\e[31m/ Size :\e[39m' $VARROOTSIZE
 echo -e '\e[31mEncrypting :\e[39m' $ENCRYPT
 echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
+echo -e '\e[32mTHIS INSTALLATION IS FO UEFI ONLY.'
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
 
