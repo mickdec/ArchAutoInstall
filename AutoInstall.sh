@@ -115,31 +115,22 @@ uefi_parts(){
 }
 bios_parts(){
         (
-        #MBR
+        #SWAP
         echo n      #New Partition
         echo p      #Primary
         echo 1      #First partition
         echo        #Default Sector start
-        echo +$VAREFISIZE    #512MiB
-        echo t      #Change type
-        echo 4      #Linux SWAP
-        #SWAP
-        echo n      #New Partition
-        echo p      #Primary
-        echo 2      #Second partition
-        echo        #Default Sector start
         echo +$VARSWAPSIZE    #5Gigas
         echo t      #Change type
-        echo 2      #Second partition
         echo 82     #Linux SWAP
         #ROOT
         echo n      #New Partition
         echo p      #Primary
-        echo 3      #Third partition
+        echo 2      #Second partition
         echo        #Default Sector start
         echo 
         echo t      #Change type
-        echo 3      #Third partition
+        echo 2      #Second partition
         echo 83     #Linux
         #WRITE
         echo w
