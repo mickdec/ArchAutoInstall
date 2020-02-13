@@ -6,9 +6,7 @@
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
-1="-GONNAGOFAST" #Setting GONNAGOFAST for ESGI
-
-if [[ "$1" == "-GONNAGOFAST" ]]
+if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
         VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
         VARKBDLAYOUT="azerty"
