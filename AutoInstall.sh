@@ -7,7 +7,8 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
-VARTYPE="UEFI"
+VARTYPE="BIOS"
+ENCRYPT="NO"
 
 # if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
@@ -17,7 +18,6 @@ then
         VAREFISIZE="512M"
         VARSWAPSIZE="5G"
         VARROOTSIZE="ENDSECTOR"
-        ENCRYPT="YES"
         VARHOSTNAME="ARCHPC"
 else
         echo -e '\e[32mEnter your keyboard layout [azerty|qwerty] :\e[39m'
@@ -242,8 +242,14 @@ then
         sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist #Removing Comment section of MirrorList
 fi
 
-echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-pacstrap /mnt base linux linux-firmware sudo nano dhcpcd grub efibootmgr wget #Installing Linux and all additionnal packages to /
+if [[ "$VARTYPE" == "UEFI" ]]
+then
+        echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
+        pacstrap /mnt base linux linux-firmware sudo nano dhcpcd grub efibootmgr #Installing Linux and all additionnal packages to /
+else
+        echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
+        pacstrap /mnt base linux linux-firmware sudo nano dhcpcd grub #Installing Linux and all additionnal packages to /
+fi
 
 echo -e '\e[32m=> \e[94m Generate fstab\e[39m'
 genfstab -U /mnt >> /mnt/etc/fstab #Generate fstab
