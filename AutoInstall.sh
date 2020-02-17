@@ -7,6 +7,27 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
+EFICHECK=$(ls /sys/firmware/efi/efivars)
+
+if [[ ${#EFICHECK} -ge 20 ]]
+then
+        VARTYPE="UEFI"
+else
+        VARTYPE="BIOS"
+fi
+
+check_encrypt(){
+        echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
+        read ENCRYPT
+}
+check_encrypt
+if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
+then
+        echo -e "\e[32mPlease enter YES or NO in uppercase"
+        check_encrypt
+fi
+
+
 # if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
@@ -42,8 +63,6 @@ else
         read VARSWAPSIZE
         echo -e '\e[32mEnter / partition size [ENDSECTOR] :\e[39m'
         read VARROOTSIZE
-        echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
-        read ENCRYPT
         if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
         then
                 echo -e '\e[31mBad Encrypt. Going YES\e[39m'
