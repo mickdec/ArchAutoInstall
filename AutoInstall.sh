@@ -3,6 +3,9 @@
 # Author : DECELLE Mickael                             #
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
+
+PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
+
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
@@ -267,10 +270,10 @@ fi
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt base linux linux-firmware sudo vim dhcpcd grub efibootmgr #Installing Linux and all additionnal packages to /
+        pacstrap /mnt $PACKETS efibootmgr #Installing Linux and all additionnal packages to /
 else
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt base linux linux-firmware sudo vim dhcpcd grub #Installing Linux and all additionnal packages to /
+        pacstrap /mnt $PACKETS #Installing Linux and all additionnal packages to /
 fi
 
 echo -e '\e[32m=> \e[94m Generate fstab\e[39m'
