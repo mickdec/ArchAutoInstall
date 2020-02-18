@@ -20,7 +20,7 @@ check_encrypt(){
         echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
         read ENCRYPT
 }
-check_encrypt
+
 if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
 then
         echo -e "\e[32mPlease enter YES or NO in uppercase"
@@ -81,7 +81,6 @@ echo -e '\e[31mSWAP Size :\e[39m' $VARSWAPSIZE
 echo -e '\e[31m/ Size :\e[39m' $VARROOTSIZE
 echo -e '\e[31mEncrypting :\e[39m' $ENCRYPT
 echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
-echo -e '\e[32mTHIS INSTALLATION IS FOR \e[94mUEFI ONLY.\e[32m'
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
 
