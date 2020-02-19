@@ -10,6 +10,15 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
+echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+    echo "You are perfectly connected to the World Wide Web. Cool."
+else
+    echo "You are not connected to the World Wide Web.. Running the manager."
+    wifi-menu ens33
+fi
+
 EFICHECK=$(ls /sys/firmware/efi/efivars)
 
 if [[ ${#EFICHECK} -ge 20 ]]
