@@ -39,6 +39,16 @@ then
         check_encrypt
 fi
 
+check_i3(){
+        echo -e '\e[32mDo yo want install i3 on your system ? [YES/NO] :\e[39m'
+        read I3
+}
+
+if [[ "$I3" != "YES" || "$I3" != "NO" ]]
+then
+        echo -e "\e[32mPlease enter YES or NO in uppercase"
+        check_i3
+fi
 
 # if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
@@ -378,6 +388,42 @@ echo "echo -e '\e[32m=> \e[94m Create grub config file\e[39m'
 grub-mkconfig -o /boot/grub/grub.cfg #Create grub config file
 
 exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
+
+if [[ "$I3" == "YES" ]]
+then
+        echo "pacman --noconfirm -S xterm xorg-xinit xorg-server i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+for i in 1 2 3 4 5
+do
+  sed -i '\$d' ~/.xinitrc
+done
+echo \"export TERMINAL=xterm
+exec i3\" >> ~/.xinitrc
+echo \"[Unit]
+Description=startx automatique pour l'utilisateur %I
+After=graphical.target systemd-user-sessions.service
+
+[Service]
+User=%I
+WorkingDirectory=%h
+PAMName=login
+Type=simple
+ExecStart=/bin/bash -l -c startx
+
+[Install]
+WantedBy=graphical.target\" >> /etc/systemd/system/startx@.service
+systemctl enable startx@root.service
+
+echo 'Section \"InputDevice\"
+Identifier \"Generic Keyboard\"
+Driver \"kbd\"
+Option \"CoreKeyboard\"
+Option \"XkbRules\" \"xorg\"
+Option \"XkbModel\" \"pc105\"
+Option \"XkbLayout\" \"fr\"
+Option \"XkbVariant\" \"latin9\"
+EndSection' >> /etc/X11/xorg.conf" >> /mnt/AutoConfig.sh
+fi
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
 chmod 777 /mnt/AutoInstall2.sh
