@@ -437,7 +437,7 @@ rm -Rf /mnt/AutoInstall2.sh
 if [[ "$I3" == "YES" ]]
 then
         echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoConfig.sh\e[39m'
-        chmod 777 /mnt/AutoInstall2.sh
+        chmod 777 /mnt/AutoConfig.sh
 
         echo -e '\e[32m=> \e[94m Starting AutoConfig.sh for i3 in chroot\e[39m'
         arch-chroot /mnt ./AutoConfig.sh
