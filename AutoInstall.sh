@@ -401,8 +401,14 @@ do
   sed -i '\$d' ~/.xinitrc
 done
 echo \"export TERMINAL=xterm
-exec i3\" >> ~/.xinitrc
-echo \"[Unit]
+exec i3\" >> ~/.xinitrc" >> /mnt/AutoConfig.sh
+
+if [[ "$VARKBDLAYOUT" == "azerty" ]]
+then
+        echo 'setxkbmap -layout fr' >> /mnt/AutoConfig.sh
+fi
+
+echo "echo \"[Unit]
 Description=startx automatique pour l'utilisateur %I
 After=graphical.target systemd-user-sessions.service
 
