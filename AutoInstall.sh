@@ -283,7 +283,7 @@ fi
 if [[ "$VARTIMEZONE" == "Europe/Paris" ]]
 then
         echo -e '\e[32m=> \e[94m Get Best mirorlist for France\e[39m'
-        curl -s "https://www.archlinux.org/mirrorlist/?country=FR&protocol=https&use_mirror_status=on" >> /etc/pacman.d/mirrorlist #Get Best mirorlist for France
+        curl -s "https://www.archlinux.org/mirrorlist/?country=FR&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist #Get Best mirorlist for France
 
         echo -e '\e[32m=> \e[94m Removing Comment section of MirrorList\e[39m'
         sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist #Removing Comment section of MirrorList
