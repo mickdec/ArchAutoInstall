@@ -14,7 +14,7 @@ PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefo
 ENCRYPT="NO"
 SSH="YES"
 I3="YES"
-1="-GONNAGOFAST"
+set -- "-GONNAGOFAST"
 
 # echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
