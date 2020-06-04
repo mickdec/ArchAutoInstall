@@ -12,6 +12,7 @@ echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="NO"
+SSH="YES"
 I3="YES"
 1="-GONNAGOFAST"
 
@@ -327,6 +328,11 @@ then
         echo "sed -i 's/#fr_FR.UTF-8/fr_FR.UTF-8/g' /etc/locale.gen #Uncomment locale region" >> /mnt/AutoInstall2.sh
 else    
         echo "sed -i 's/#en_EN.UTF-8/en_EN.UTF-8/g' /etc/locale.gen #Uncomment locale region" >> /mnt/AutoInstall2.sh
+fi
+
+if [[ "$SSH" == "YES" ]]
+then
+        echo "sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config" >> /mnt/AutoInstall2.sh
 fi
 
 if [[ "$VARKBDLAYOUT" == "azerty" ]]
