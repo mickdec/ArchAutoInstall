@@ -4,15 +4,20 @@
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
 
-PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub ssh firefox-esr"
+PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
 
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
 echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
+#VARS FOR ESGI
+PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
+ENCRYPT="NO"
+I3="NO"
+
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
-        echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
+        echo "Testing your internet connection..."
+        if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
                 echo "You are perfectly connected to the World Wide Web. Cool."
         else
                 echo "You are not connected to the World Wide Web.. Running the manager."
@@ -27,36 +32,41 @@ EFICHECK=$(ls /sys/firmware/efi/efivars)
 if [[ ${#EFICHECK} -ge 20 ]]
 then
         VARTYPE="UEFI"
+        echo -e "\e[94mUEFI \e[32mtype detected.\e[39m"
 else
         VARTYPE="BIOS"
+        echo -e "\e[94mBIOS \e[32mtype detected.\e[39m"
 fi
 
 check_encrypt(){
         echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
         read ENCRYPT
+        while [[ "$ENCRYPT" != "YES" && "$ENCRYPT" != "NO" ]]
+        do
+                echo -e "\e[32mPlease enter YES or NO in uppercase\e[39m"
+                read ENCRYPT
+        done
 }
+# check_encrypt COMMENT FOR ESGI
 
-if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
-then
-        echo -e "\e[32mPlease enter YES or NO in uppercase"
-        check_encrypt
-fi
 
 check_i3(){
         echo -e '\e[32mDo yo want install i3 on your system ? [YES/NO] :\e[39m'
         read I3
+        if [[ "$I3" != "YES" && "$I3" != "NO" ]]
+        then
+                echo -e "\e[32mPlease enter YES or NO in uppercase\e[39m"
+                check_i3
+        fi
 }
+# check_i3 COMMENT FOR ESGI
 
-if [[ "$I3" != "YES" || "$I3" != "NO" ]]
-then
-        echo -e "\e[32mPlease enter YES or NO in uppercase"
-        check_i3
-fi
 
 # if [[ "$1" == "-GONNAGOFAST" ]]
 if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
 then
         VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
+        VARTIMEZONE="Europe/Paris" #FOR ESGI
         VARKBDLAYOUT="azerty"
         VAREFISIZE="512M"
         VARSWAPSIZE="5G"
@@ -105,6 +115,7 @@ echo -e '\e[31mEFI Size :\e[39m' $VAREFISIZE
 echo -e '\e[31mSWAP Size :\e[39m' $VARSWAPSIZE
 echo -e '\e[31m/ Size :\e[39m' $VARROOTSIZE
 echo -e '\e[31mEncrypting :\e[39m' $ENCRYPT
+echo -e '\e[31mi3 :\e[39m' $I3
 echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
