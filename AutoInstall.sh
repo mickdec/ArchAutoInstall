@@ -11,7 +11,7 @@ echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match w
 #VARS FOR ESGI
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="NO"
-I3="NO"
+I3="YES"
 
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
@@ -39,27 +39,27 @@ else
 fi
 
 check_encrypt(){
-        echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
-        read ENCRYPT
         while [[ "$ENCRYPT" != "YES" && "$ENCRYPT" != "NO" ]]
         do
+                echo -e '\e[32mDo yo want to encrypt your system ? [YES/NO] :\e[39m'
+                read ENCRYPT
                 echo -e "\e[32mPlease enter YES or NO in uppercase\e[39m"
                 read ENCRYPT
         done
 }
-# check_encrypt COMMENT FOR ESGI
+check_encrypt
 
 
 check_i3(){
-        echo -e '\e[32mDo yo want install i3 on your system ? [YES/NO] :\e[39m'
-        read I3
         if [[ "$I3" != "YES" && "$I3" != "NO" ]]
         then
+                echo -e '\e[32mDo yo want install i3 on your system ? [YES/NO] :\e[39m'
+                read I3
                 echo -e "\e[32mPlease enter YES or NO in uppercase\e[39m"
                 check_i3
         fi
 }
-# check_i3 COMMENT FOR ESGI
+check_i3
 
 
 # if [[ "$1" == "-GONNAGOFAST" ]]
