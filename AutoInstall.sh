@@ -4,10 +4,10 @@
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
 
-PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
+PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub ssh firefox-esr"
 
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
-echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default\e[39m'
+echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
 # echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
