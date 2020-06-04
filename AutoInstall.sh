@@ -333,7 +333,6 @@ fi
 if [[ "$SSH" == "YES" ]]
 then
         echo "sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config" >> /mnt/AutoInstall2.sh
-        echo "systemctl enable sshd #Enabling sshd Service"
 fi
 
 if [[ "$VARKBDLAYOUT" == "azerty" ]]
@@ -358,9 +357,15 @@ echo -e '\e[32m=> \e[94m Updating host file for localdomain\e[39m'
 echo 127.0.1.1 "$VARHOSTNAME".localdomain "$VARHOSTNAME" >> /etc/hosts #Updating host file for localdomain
 
 echo -e '\e[32m=> \e[94m Enabling DHCPCD Service\e[39m'
-systemctl enable dhcpcd #Enabling DHCPCD Service
+systemctl enable dhcpcd #Enabling DHCPCD Service" >> /mnt/AutoInstall2.sh
 
-echo -e '\e[32m=> \e[94m Enabling Hook config\e[39m'" >> /mnt/AutoInstall2.sh
+if [[ "$SSH" == "YES" ]]
+then
+        echo "echo -e '\e[32m=> \e[94m Enabling SSH Service\e[39m'
+        systemctl enable sshd #Enabling sshd Service" >> /mnt/AutoInstall2.sh
+fi
+
+echo "echo -e '\e[32m=> \e[94m Enabling Hook config\e[39m'" >> /mnt/AutoInstall2.sh
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
