@@ -7,13 +7,15 @@
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
 
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
-echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
+
 #VARS FOR ESGI
+echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="NO"
 I3="YES"
+1="-GONNAGOFAST"
 
-# echo -e 'I you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
+# echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
         echo "Testing your internet connection..."
@@ -62,8 +64,7 @@ check_i3(){
 check_i3
 
 
-# if [[ "$1" == "-GONNAGOFAST" ]]
-if [[ 1 == 1 ]] #Setting GONNAGOFAST for ESGI
+if [[ "$1" == "-GONNAGOFAST" ]]
 then
         VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
         VARTIMEZONE="Europe/Paris" #FOR ESGI
