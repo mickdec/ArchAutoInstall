@@ -7,11 +7,8 @@
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
 
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
-
-#VARS FOR ESGI
-echo -e 'Hello \e[94mM. LEONARD \e[32mthis script is fast by default, to match with your requests (i3 + SSH + firefox)\e[39m'
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
-ENCRYPT="NO"
+ENCRYPT="YES"
 SSH="YES"
 I3="YES"
 set -- "-GONNAGOFAST"
@@ -418,7 +415,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S xterm xorg-xinit xorg-server i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
