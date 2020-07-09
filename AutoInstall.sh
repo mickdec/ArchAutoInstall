@@ -1,18 +1,17 @@
 ########################################################
-# Arch AutoInstaller script with / encryption          #
+# Arch AutoInstaller script with /encryption /Security #
 # Author : DECELLE Mickael                             #
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
 
-PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
-
-echo -e '\e[32mWelcome to Arch AutoInstall Script'
 PACKETS="base linux-hardened linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
 set -- "-GONNAGOFAST"
 
+echo -e '\e[32mWelcome to Arch AutoInstall Script ESGI Version.\e[39m'
+#PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
 # echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
@@ -64,7 +63,7 @@ check_i3
 
 if [[ "$1" == "-GONNAGOFAST" ]]
 then
-        VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
+        #VARTIMEZONE=$(curl --fail https://ipapi.co/timezone) NOT WORKING RN
         VARTIMEZONE="Europe/Paris" #FOR ESGI
         VARKBDLAYOUT="azerty"
         VAREFISIZE="512M"
