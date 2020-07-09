@@ -7,7 +7,7 @@
 PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
 
 echo -e '\e[32mWelcome to Arch AutoInstall Script'
-PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
+PACKETS="base linux-hardened linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
@@ -400,11 +400,11 @@ sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"pa
         then
         echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
 GUIDMAPPER=$(blkid | grep ^/dev/sda3 | awk -F "\"" '{print $2}') #Get device GUID
-sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0:\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
         else
                 echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
 GUIDMAPPER=$(blkid | grep ^/dev/sda2 | awk -F "\"" '{print $2}') #Get device GUID
-sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0:\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
         fi
 fi
 
@@ -415,7 +415,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
