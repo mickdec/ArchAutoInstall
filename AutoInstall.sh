@@ -414,7 +414,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S zsh git apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
@@ -422,11 +422,6 @@ do
 done
 echo \"export TERMINAL=xterm
 exec i3\" >> ~/.xinitrc" >> /mnt/AutoConfig.sh
-
-if [[ "$VARKBDLAYOUT" == "azerty" ]]
-then
-        echo 'setxkbmap -layout fr' >> /mnt/AutoConfig.sh
-fi
 
 echo "echo \"[Unit]
 Description=startx automatique pour l'utilisateur %I
@@ -451,7 +446,10 @@ Option \"XkbRules\" \"xorg\"
 Option \"XkbModel\" \"pc105\"
 Option \"XkbLayout\" \"fr\"
 Option \"XkbVariant\" \"latin9\"
-EndSection' >> /etc/X11/xorg.conf" >> /mnt/AutoConfig.sh
+EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
+
+curl -L http://install.ohmyz.sh/ | sh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" >> /mnt/AutoConfig.sh
 fi
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
@@ -462,6 +460,10 @@ arch-chroot /mnt ./AutoInstall2.sh
 
 echo -e '\e[32m=> \e[94mRemoving AutoInstall2.sh\e[39m'
 rm -Rf /mnt/AutoInstall2.sh
+
+echo -e '\e[32m=> \e[94mRemoving AutoInstall.sh\e[39m'
+arch-chroot /mnt "rm -Rf /mnt/AutoInstall.sh"
+
 
 if [[ "$I3" == "YES" ]]
 then
