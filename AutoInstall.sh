@@ -449,7 +449,8 @@ Option \"XkbVariant\" \"latin9\"
 EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
 
 curl -L http://install.ohmyz.sh/ | sh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" >> /mnt/AutoConfig.sh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+sed -i 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"powerlevel10k\/powerlevel10k\"/g' ~/.zshrc" >> /mnt/AutoConfig.sh
 fi
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
