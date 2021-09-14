@@ -4,15 +4,13 @@
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
 
-PACKETS="base linux-hardened linux-firmware sudo vim nano wget dhcpcd grub openssh firefox"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
-set -- "-GONNAGOFAST"
+# set -- "-GONNAGOFAST"
 
-echo -e '\e[32mWelcome to Arch AutoInstall Script ESGI Version.\e[39m'
-#PACKETS="base linux linux-firmware sudo vim nano wget dhcpcd grub"
-# echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
+PACKETS="base linux linux-firmware sudo nano wget dhcpcd grub openssh firefox-esr"
+echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
         echo "Testing your internet connection..."
@@ -67,9 +65,9 @@ then
         VARTIMEZONE="Europe/Paris" #FOR ESGI
         VARKBDLAYOUT="azerty"
         VAREFISIZE="512M"
-        VARSWAPSIZE="5G"
+        VARSWAPSIZE="3G"
         VARROOTSIZE="ENDSECTOR"
-        VARHOSTNAME="ARCHPC"
+        VARHOSTNAME="PEN"
 else
         echo -e '\e[32mEnter your keyboard layout [azerty|qwerty] :\e[39m'
         read VARKBDLAYOUT
