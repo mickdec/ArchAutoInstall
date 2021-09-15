@@ -7,7 +7,7 @@
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
-# set -- "-GONNAGOFAST"
+set -- "-GONNAGOFAST"
 
 PACKETS="base linux linux-firmware sudo nano wget dhcpcd grub openssh firefox-esr"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
@@ -137,6 +137,7 @@ timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
 uefi_parts(){
         (
+        echo o      #New disklabel
         #EFI
         echo n      #New Partition
         echo p      #Primary
@@ -165,10 +166,11 @@ uefi_parts(){
         echo 83     #Linux
         #WRITE
         echo w
-        ) | sudo fdisk /dev/sda #Start fdisk with all preceding commands
+        ) | sudo fdisk --wipe-partitions always /dev/sda #Start fdisk with all preceding commands
 }
 bios_parts(){
         (
+        echo o      #New disklabel
         #SWAP
         echo n      #New Partition
         echo p      #Primary
@@ -188,7 +190,7 @@ bios_parts(){
         echo 83     #Linux
         #WRITE
         echo w
-        ) | sudo fdisk /dev/sda #Start fdisk with all preceding commands
+        ) | sudo fdisk --wipe-partitions always /dev/sda #Start fdisk with all preceding commands
 }
 
 if [[ "$VARTYPE" == "UEFI" ]]
@@ -206,12 +208,12 @@ then
                 echo -e '\e[32m=> \e[94m Encrypting /dev/sda3 PLEASE ENTER A PASSWORD\e[39m'
                 cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda3 #Encrypt /root
                 echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
-                cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda3 c_sda3 #Open /root and create mapper
+                cryptsetup luksOpen /dev/sda3 c_sda3 #Open /root and create mapper
         else
                 echo -e '\e[32m=> \e[94m Encrypting /dev/sda2 PLEASE ENTER A PASSWORD\e[39m'
                 cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda2 #Encrypt /root
                 echo -e '\e[32m=> \e[94m Openning /dev/sda2\e[39m'
-                cryptsetup -c aes-xts-plain64 -s 512 -o 0 open /dev/sda2 c_sda2 #Open /root and create mapper
+                cryptsetup luksOpen /dev/sda2 c_sda2 #Open /root and create mapper
         fi
 fi
 
@@ -290,7 +292,7 @@ fi
 if [[ "$VARTIMEZONE" == "Europe/Paris" ]]
 then
         echo -e '\e[32m=> \e[94m Get Best mirorlist for France\e[39m'
-        curl -s "https://www.archlinux.org/mirrorlist/?country=FR&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist #Get Best mirorlist for France
+        curl -s "https://archlinux.org/mirrorlist/?country=FR&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist #Get Best mirorlist for France
 
         echo -e '\e[32m=> \e[94m Removing Comment section of MirrorList\e[39m'
         sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist #Removing Comment section of MirrorList
