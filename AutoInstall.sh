@@ -9,7 +9,7 @@ SSH="YES"
 I3="YES"
 set -- "-GONNAGOFAST"
 
-PACKETS="base linux linux-firmware sudo nano wget dhcpcd grub openssh firefox-esr"
+PACKETS="base linux linux-firmware sudo nano wget dhcpcd grub openssh firefox"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
