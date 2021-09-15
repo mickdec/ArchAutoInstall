@@ -412,9 +412,10 @@ grub-mkconfig -o /boot/grub/grub.cfg #Create grub config file
 
 exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
+
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S zsh git apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-wm i3status xorg-fonts-type1 ttf-dejavu font-bh-ttf gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S zsh git apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
@@ -461,9 +462,6 @@ arch-chroot /mnt ./AutoInstall2.sh
 
 echo -e '\e[32m=> \e[94mRemoving AutoInstall2.sh\e[39m'
 rm -Rf /mnt/AutoInstall2.sh
-
-echo -e '\e[32m=> \e[94mRemoving AutoInstall.sh\e[39m'
-arch-chroot /mnt "rm -Rf /mnt/AutoInstall.sh"
 
 
 if [[ "$I3" == "YES" ]]
