@@ -454,8 +454,9 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-
 
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.p10k.zsh > /root/.p10k.zsh
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.zshrc > /root/.zshrc
-
-sed 's-root:/bin/bash-root:/bin/zsh-g' -i /etc/passwd" >> /mnt/AutoConfig.sh
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xressources > /root/.Xressources
+xrdb -merge ~/.Xresources
+" >> /mnt/AutoConfig.sh
 fi
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
