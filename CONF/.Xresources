@@ -1,65 +1,55 @@
-xterm*faceName: Ubuntu Mono derivative Powerline
-xterm*faceSize: 13
-xterm*vt100XTerm*geometry: 80x60
-xterm*saveLines: 16384
-xterm*loginShell: false
-xterm*charClass: 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48
-xterm*termName: xterm-color
-xterm*eightBitInput: false
- 
-#define S_base03        #002b36
-#define S_base02        #073642
-#define S_base01        #586e75
-#define S_base00        #657b83
-#define S_base0         #839496
-#define S_base1         #93a1a1
-#define S_base2         #eee8d5
-#define S_base3         #fdf6e3
- 
-XTerm*background:            S_base03
-XTerm*foreground:            S_base0
-XTerm*fadeColor:             S_base03
-XTerm*cursorColor:           S_base1
-XTerm*pointerColorBackground:S_base01
-XTerm*pointerColorForeground:S_base1
- 
-#define S_yellow        #b58900
-#define S_orange        #cb4b16
-#define S_red           #dc322f
-#define S_magenta       #d33682
-#define S_violet        #6c71c4
-#define S_blue          #268bd2
-#define S_cyan          #2aa198
-#define S_green         #859900
- 
-!! black dark/light
-XTerm*color0:                S_base02
-XTerm*color8:                S_base03
- 
-!! red dark/light
-XTerm*color1:                S_red
-XTerm*color9:                S_orange
- 
-!! green dark/light
-XTerm*color2:                S_green
-XTerm*color10:               S_base01
- 
-!! yellow dark/light
-XTerm*color3:                S_yellow
-XTerm*color11:               S_base00
- 
-!! blue dark/light
-XTerm*color4:                S_blue
-XTerm*color12:               S_base0
- 
-!! magenta dark/light
-XTerm*color5:                S_magenta
-XTerm*color13:               S_violet
- 
-!! cyan dark/light
-XTerm*color6:                S_cyan
-XTerm*color14:               S_base1
- 
-!! white dark/light
-XTerm*color7:                S_base2
-XTerm*color15:               S_base3
+# - Nous spécifions les couleurs avec lesquelles nous travaillerons dans urxvt, vous pouvez faire les combinaisons que vous aimez
+!Noir
+URxvt.color0: # 000000
+URxvt.color8: # 555753
+!Rouge
+URxvt.color1: # 990099
+URxvt.color9: # 8E388E
+!Vert
+URxvt.color2: # 4E9A06
+URxvt.color10: # 699000
+!Jaune
+URxvt.color3: # FFA500
+URxvt.color11: # FFA500
+!Bleu
+URxvt.color4: # 3465A4
+URxvt.color12: # 729FCF
+!Magenta
+URxvt.color5: # 75507B
+URxvt.color13: # AD7FA8
+! Cyan
+URxvt.color6: # 06989A
+URxvt.color14: # 34E2E2
+!Blanc
+URxvt.color7 : #FFFFFF
+URxvt.color15 : #FFFFFF
+# - Apparence de la fenêtre
+# | - On spécifie le titre de la fenêtre, par défaut, urxvt
+URxvt.title: Console
+# | - Nous ajoutons une icône personnalisée, qui doit être dans l'adresse que nous spécifions
+URxvt.iconFile: /usr/share/icons/consola.svg
+# | - On supprime les barres de défilement (personnellement je ne les aime pas)
+URxvt.scrollBar: false
+# | - Nous ajoutons de la transparence
+URxvt.de profondeur: 32
+URxvt.background: [80] # 000000
+# | - On définit la couleur principale (lettres)
+URxvt.foreground: # 699000
+# | - On définit la couleur du curseur
+URxvt.cursorCouleur: # 699000
+# | - On ajoute le clignotement au curseur
+URxvt.cursorBlink: vrai
+# | - Nous définissons le type de police à utiliser (pour obtenir une liste complète des polices disponibles sur votre système, utilisez "fc-list" sur votre console).
+URxvt.font: xft: Terminus: pixelsize = 12
+# | - S'il y a séparation entre les caractères, ajoutez, où -1 est le nombre de pixels à diminuer
+URxvt.letterSpace: -1
+# | - Ajout du support pour les onglets
+URxvt.perl-ext-commoni: par défaut, onglet
+# | - On définit la couleur de fond des onglets
+URxvt.tabbed.tab-bg: # 000000
+# | - On définit la couleur frontale des cils
+URxvt.tabbed.tab-fg: # 699000
+# | - On définit la couleur de fond des séparateurs d'onglets
+URxvt.tabbed.tabbar-bg: # 000000
+# | - On définit la couleur de devant des séparateurs d'onglets
+URxvt.tabbed.tabbar-fg: # 4E9A06
