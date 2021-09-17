@@ -454,9 +454,12 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-
 
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.p10k.zsh > /root/.p10k.zsh
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.zshrc > /root/.zshrc
-curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xressources > /root/.Xressources
-xrdb -merge ~/.Xresources
-" >> /mnt/AutoConfig.sh
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bashrc > /root/.bashrc
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bash_profile > /root/.bash_profile
+source ~/.bashrc
+
+#sudo pacman -S lightdm lightdm-gtk-greeter -y
+#systemctl enable lightdm" >> /mnt/AutoConfig.sh
 fi
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoInstall2.sh\e[39m'
