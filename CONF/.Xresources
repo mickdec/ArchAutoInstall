@@ -1,55 +1,31 @@
-# - Nous spécifions les couleurs avec lesquelles nous travaillerons dans urxvt, vous pouvez faire les combinaisons que vous aimez
-!Noir
 URxvt.color0: # 000000
 URxvt.color8: # 555753
-!Rouge
 URxvt.color1: # 990099
 URxvt.color9: # 8E388E
-!Vert
 URxvt.color2: # 4E9A06
 URxvt.color10: # 699000
-!Jaune
 URxvt.color3: # FFA500
 URxvt.color11: # FFA500
-!Bleu
 URxvt.color4: # 3465A4
 URxvt.color12: # 729FCF
-!Magenta
 URxvt.color5: # 75507B
 URxvt.color13: # AD7FA8
-! Cyan
 URxvt.color6: # 06989A
 URxvt.color14: # 34E2E2
-!Blanc
 URxvt.color7 : #FFFFFF
 URxvt.color15 : #FFFFFF
-# - Apparence de la fenêtre
-# | - On spécifie le titre de la fenêtre, par défaut, urxvt
 URxvt.title: Console
-# | - Nous ajoutons une icône personnalisée, qui doit être dans l'adresse que nous spécifions
 URxvt.iconFile: /usr/share/icons/consola.svg
-# | - On supprime les barres de défilement (personnellement je ne les aime pas)
 URxvt.scrollBar: false
-# | - Nous ajoutons de la transparence
 URxvt.de profondeur: 32
 URxvt.background: [80] # 000000
-# | - On définit la couleur principale (lettres)
-URxvt.foreground: # 699000
-# | - On définit la couleur du curseur
-URxvt.cursorCouleur: # 699000
-# | - On ajoute le clignotement au curseur
+URxvt.foreground: # FFFFFF
+URxvt.cursorCouleur: # FFFFFF
 URxvt.cursorBlink: vrai
-# | - Nous définissons le type de police à utiliser (pour obtenir une liste complète des polices disponibles sur votre système, utilisez "fc-list" sur votre console).
 URxvt.font: xft: Terminus: pixelsize = 12
-# | - S'il y a séparation entre les caractères, ajoutez, où -1 est le nombre de pixels à diminuer
-URxvt.letterSpace: -1
-# | - Ajout du support pour les onglets
+URxvt.letterSpace: -2
 URxvt.perl-ext-commoni: par défaut, onglet
-# | - On définit la couleur de fond des onglets
 URxvt.tabbed.tab-bg: # 000000
-# | - On définit la couleur frontale des cils
-URxvt.tabbed.tab-fg: # 699000
-# | - On définit la couleur de fond des séparateurs d'onglets
+URxvt.tabbed.tab-fg: # FFFFFF
 URxvt.tabbed.tabbar-bg: # 000000
-# | - On définit la couleur de devant des séparateurs d'onglets
 URxvt.tabbed.tabbar-fg: # 4E9A06
