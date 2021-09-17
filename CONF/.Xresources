@@ -17,14 +17,12 @@ URxvt.color15 : #FFFFFF
 URxvt.title: Console
 URxvt.iconFile: /usr/share/icons/consola.svg
 URxvt.scrollBar: false
-URxvt.de profondeur: 32
 URxvt.background: [80] # 000000
 URxvt.foreground: # FFFFFF
 URxvt.cursorCouleur: # FFFFFF
 URxvt.cursorBlink: vrai
 URxvt.font: xft: Terminus: pixelsize = 12
-URxvt.letterSpace: -2
-URxvt.perl-ext-commoni: par défaut, onglet
+URxvt.perl-ext-commoni: par defaut, onglet
 URxvt.tabbed.tab-bg: # 000000
 URxvt.tabbed.tab-fg: # FFFFFF
 URxvt.tabbed.tabbar-bg: # 000000
