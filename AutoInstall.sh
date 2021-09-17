@@ -415,7 +415,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S zsh git apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S which zsh git apparmor xterm xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
@@ -456,6 +456,7 @@ curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.p
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.zshrc > /root/.zshrc
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bashrc > /root/.bashrc
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bash_profile > /root/.bash_profile
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xresources > /root/.Xresources
 source ~/.bashrc
 
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
