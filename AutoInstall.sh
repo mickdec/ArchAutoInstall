@@ -137,7 +137,7 @@ timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
 lsblk
 ls /dev/sd*
-echo -e '\e[32mWhat disk do you want to use for the installation ? :\e[39m'
+echo -e '\e[32mWhat disk do you want to use for the installation (/dev/sdX) (Dont forget the /dev/) ? :\e[39m'
 read DISK
 
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
