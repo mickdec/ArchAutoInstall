@@ -464,7 +464,6 @@ curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/co
 
 wget https://raw.githubusercontent.com/mickdec/Esper/master/RES/READMERES/Esper-1920x1080.png?token=AH352UXZSQPPWXIQACUD5TDBKHFG2 -O /root/.config/bg.jpg
 
-#feh -bg-scale /root/.config/bg.jpg
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
 #systemctl enable lightdm" >> /mnt/AutoConfig.sh
 fi
