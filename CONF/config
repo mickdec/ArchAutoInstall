@@ -94,4 +94,4 @@ client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.background           #2f343f
 gaps inner 20
 gaps outer -5
-feh --bg-scale /root/.config/bg.jpg
+exec feh --bg-scale /root/.config/bg.jpg
