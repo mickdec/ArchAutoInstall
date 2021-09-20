@@ -135,6 +135,7 @@ timedatectl set-ntp true #Set timestamp locale
 echo -e '\e[32m=> \e[94m Set time zone to '$VARTIMEZONE'\e[39m'
 timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
+lsblk
 ls /dev/sd*
 echo -e '\e[32mWhat disk do you want to use for the installation ? :\e[39m'
 read DISK
