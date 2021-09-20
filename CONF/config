@@ -94,4 +94,5 @@ client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.background           #2f343f
 gaps inner 20
 gaps outer -5
+for_window [class="^.*"] border pixel 1
 exec feh --bg-scale /root/.config/bg.jpg
