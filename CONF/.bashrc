@@ -1,7 +1,10 @@
-export SHELL=$(which zsh)
-if [[ -o login ]]
+if [ -z "${NOZSH}" ] && type zsh &> /dev/null
 then
-    exec zsh -l
-else
-    exec zsh
+    export SHELL=$(which zsh)
+    if [[ -o login ]]
+    then
+        exec zsh -l
+    else
+        exec zsh
+    fi
 fi
