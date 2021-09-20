@@ -415,7 +415,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+        echo "pacman --noconfirm -S feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 cp /etc/X11/xinit/xinitrc ~/.xinitrc
 for i in 1 2 3 4 5
 do
@@ -459,6 +459,9 @@ curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.b
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bash_profile > /root/.bash_profile
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xresources > /root/.Xresources
 source ~/.bashrc
+
+wget https://raw.githubusercontent.com/mickdec/Esper/master/RES/READMERES/Esper-1920x1080.png?token=AH352UXZSQPPWXIQACUD5TDBKHFG2 > bg.jpg
+feh -bg-scale bg.jpg
 
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
 #systemctl enable lightdm" >> /mnt/AutoConfig.sh

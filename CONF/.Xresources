@@ -1,4 +1,6 @@
-URxvt.background:	#050505
+!URxvt.background:	#050505
+urxvt*depth: 32
+urxvt*background: rgba:0000/0000/0200/c800
 URxvt.foreground:	#DEDEDE
 URxvt.font:			xft:DejaVu Sans Mono:pixelsize=18:antialias=true:hinting=true
 URxvt.boldFont:		xft:DejaVu Sans Mono:bold:pixelsize=18:antialias=true:hinting=true
