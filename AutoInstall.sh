@@ -4,6 +4,7 @@
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
 
+DISK="/dev/sda"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
@@ -134,6 +135,10 @@ timedatectl set-ntp true #Set timestamp locale
 echo -e '\e[32m=> \e[94m Set time zone to '$VARTIMEZONE'\e[39m'
 timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
+ls /dev/sd*
+echo -e '\e[32mWhat disk do you want to use for the installation ? :\e[39m'
+read DISK
+
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
 uefi_parts(){
         (
@@ -166,7 +171,7 @@ uefi_parts(){
         echo 83     #Linux
         #WRITE
         echo w
-        ) | sudo fdisk --wipe-partitions always /dev/sda #Start fdisk with all preceding commands
+        ) | sudo fdisk --wipe-partitions always $DISK #Start fdisk with all preceding commands
 }
 bios_parts(){
         (
@@ -190,7 +195,7 @@ bios_parts(){
         echo 83     #Linux
         #WRITE
         echo w
-        ) | sudo fdisk --wipe-partitions always /dev/sda #Start fdisk with all preceding commands
+        ) | sudo fdisk --wipe-partitions always $DISK #Start fdisk with all preceding commands
 }
 
 if [[ "$VARTYPE" == "UEFI" ]]
@@ -205,22 +210,22 @@ if [[ "$ENCRYPT" == "YES" ]]
 then
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Encrypting /dev/sda3 PLEASE ENTER A PASSWORD\e[39m'
-                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda3 #Encrypt /root
-                echo -e '\e[32m=> \e[94m Openning /dev/sda3\e[39m'
-                cryptsetup luksOpen /dev/sda3 c_sda3 #Open /root and create mapper
+                echo -e '\e[32m=> \e[94m Encrypting '$DISK'3 PLEASE ENTER A PASSWORD\e[39m'
+                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"3 #Encrypt /root
+                echo -e '\e[32m=> \e[94m Openning '$DISK'3\e[39m'
+                cryptsetup luksOpen "$DISK"3 c_sda3 #Open /root and create mapper
         else
-                echo -e '\e[32m=> \e[94m Encrypting /dev/sda2 PLEASE ENTER A PASSWORD\e[39m'
-                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat /dev/sda2 #Encrypt /root
-                echo -e '\e[32m=> \e[94m Openning /dev/sda2\e[39m'
-                cryptsetup luksOpen /dev/sda2 c_sda2 #Open /root and create mapper
+                echo -e '\e[32m=> \e[94m Encrypting '$DISK'2 PLEASE ENTER A PASSWORD\e[39m'
+                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"2 #Encrypt /root
+                echo -e '\e[32m=> \e[94m Openning '$DISK'2\e[39m'
+                cryptsetup luksOpen "$DISK"2 c_sda2 #Open /root and create mapper
         fi
 fi
 
 if [[ "$VARTYPE" == "UEFI" ]]
 then 
                 echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
-                mkfs.fat -F32 /dev/sda1 #Formating EFI Fat32
+                mkfs.fat -F32 "$DISK"1 #Formating EFI Fat32
 fi
 
 if [[ "$ENCRYPT" == "YES" ]]
@@ -237,26 +242,26 @@ else
         if [[ "$VARTYPE" == "UEFI" ]]
         then
                 echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
-                mkfs.ext4 /dev/sda3 #Formating /root EXT4
+                mkfs.ext4 "$DISK"3 #Formating /root EXT4
         else
                 echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
-                mkfs.ext4 /dev/sda2 #Formating /root EXT4
+                mkfs.ext4 "$DISK"2 #Formating /root EXT4
         fi
 fi
 
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-        mkswap /dev/sda2 #Setting Swap for SWAP Partition
+        mkswap "$DISK"2 #Setting Swap for SWAP Partition
 
         echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
-        swapon /dev/sda2 #Enabling SWAP
+        swapon "$DISK"2 #Enabling SWAP
 else
         echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-        mkswap /dev/sda1 #Setting Swap for SWAP Partition
+        mkswap "$DISK"1 #Setting Swap for SWAP Partition
 
         echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
-        swapon /dev/sda1 #Enabling SWAP
+        swapon "$DISK"1 #Enabling SWAP
 fi
 
 if [[ "$ENCRYPT" == "YES" ]]
@@ -273,10 +278,10 @@ else
         if [[ "$VARTYPE" == "UEFI" ]]
         then
                 echo -e '\e[32m=> \e[94m Mounting root\e[39m'
-                mount /dev/sda3 /mnt #Mounting root
+                mount "$DISK"3 /mnt #Mounting root
         else
                 echo -e '\e[32m=> \e[94m Mounting root\e[39m'
-                mount /dev/sda2 /mnt #Mounting root
+                mount "$DISK"2 /mnt #Mounting root
         fi
 fi
 
@@ -286,7 +291,7 @@ mkdir /mnt/boot #Creating /boot Directory
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         echo -e '\e[32m=> \e[94m Mount EFI\e[39m'
-        mount /dev/sda1 /mnt/boot #Mounting EFI to /boot
+        mount "$DISK"1 /mnt/boot #Mounting EFI to /boot
 fi
 
 if [[ "$VARTIMEZONE" == "Europe/Paris" ]]
@@ -383,7 +388,7 @@ grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB #Inst
 else
         #GRUB Install Error HERE with BIOS+ENCRYPT, Dont know why.
         echo "echo -e '\e[32m=> \e[94m Install Bootloader\e[39m'
-grub-install --target=i386-pc /dev/sda #Install Bootloader" >> /mnt/AutoInstall2.sh 
+grub-install --target=i386-pc "$DISK" #Install Bootloader" >> /mnt/AutoInstall2.sh 
 fi
 
 
@@ -398,11 +403,11 @@ sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"pa
         if [[ "$VARTYPE" == "UEFI" ]]
         then
         echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
-GUIDMAPPER=$(blkid | grep ^/dev/sda3 | awk -F "\"" '{print $2}') #Get device GUID
+GUIDMAPPER=$(blkid | grep ^"$DISK"3 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
         else
                 echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
-GUIDMAPPER=$(blkid | grep ^/dev/sda2 | awk -F "\"" '{print $2}') #Get device GUID
+GUIDMAPPER=$(blkid | grep ^"$DISK"2 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
         fi
 fi
