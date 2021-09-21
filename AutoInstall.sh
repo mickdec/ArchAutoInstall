@@ -22,7 +22,9 @@ check_www(){
                 ESSID=""
                 PASS=""
                 echo "Enter is the name (ESSID) of your network :"
+                read ESSID
                 echo "Enter the password :"
+                read PASS
                 printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
                 systemctl restart wpa*
                 wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
