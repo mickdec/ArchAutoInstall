@@ -8,9 +8,10 @@ DISK="/dev/sda"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
+DISKTYPE="SDA"
 set -- "-GONNAGOFAST"
 
-PACKETS="base linux linux-firmware sudo nano wget dhcpcd grub openssh firefox"
+PACKETS="base linux wpa_supplicant linux-firmware sudo nano wget dhcpcd grub openssh firefox"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 check_www(){
@@ -144,8 +145,14 @@ timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
 lsblk
 ls /dev/sd*
+ls /dev/nvm*
 echo -e '\e[32mWhat disk do you want to use for the installation (/dev/sdX) (Dont forget the /dev/) ? :\e[39m'
 read DISK
+
+if [[ "$DISK" != *"sda"* ]]
+then
+        $DISKTYPE="nvme"
+fi
 
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
 uefi_parts(){
@@ -218,78 +225,166 @@ if [[ "$ENCRYPT" == "YES" ]]
 then
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Encrypting '$DISK'3 PLEASE ENTER A PASSWORD\e[39m'
-                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"3 #Encrypt /root
-                echo -e '\e[32m=> \e[94m Openning '$DISK'3\e[39m'
-                cryptsetup luksOpen "$DISK"3 c_sda3 #Open /root and create mapper
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Encrypting '$DISK'3 PLEASE ENTER A PASSWORD\e[39m'
+                        cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"3 #Encrypt /root
+                        echo -e '\e[32m=> \e[94m Openning '$DISK'3\e[39m'
+                        cryptsetup luksOpen "$DISK"3 c_sda3 #Open /root and create mapper
+                else 
+                        echo -e '\e[32m=> \e[94m Encrypting '$DISK'p3 PLEASE ENTER A PASSWORD\e[39m'
+                        cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"p3 #Encrypt /root
+                        echo -e '\e[32m=> \e[94m Openning '$DISK'p3\e[39m'
+                        cryptsetup luksOpen "$DISK"p3 c_nvm3 #Open /root and create mapper
+                fi
         else
-                echo -e '\e[32m=> \e[94m Encrypting '$DISK'2 PLEASE ENTER A PASSWORD\e[39m'
-                cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"2 #Encrypt /root
-                echo -e '\e[32m=> \e[94m Openning '$DISK'2\e[39m'
-                cryptsetup luksOpen "$DISK"2 c_sda2 #Open /root and create mapper
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Encrypting '$DISK'2 PLEASE ENTER A PASSWORD\e[39m'
+                        cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"2 #Encrypt /root
+                        echo -e '\e[32m=> \e[94m Openning '$DISK'2\e[39m'
+                        cryptsetup luksOpen "$DISK"2 c_sda2 #Open /root and create mapper
+                else
+                        echo -e '\e[32m=> \e[94m Encrypting '$DISK'p2 PLEASE ENTER A PASSWORD\e[39m'
+                        cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "$DISK"p2 #Encrypt /root
+                        echo -e '\e[32m=> \e[94m Openning '$DISK'p2\e[39m'
+                        cryptsetup luksOpen "$DISK"p2 c_nvm2 #Open /root and create mapper
+                fi
         fi
 fi
 
 if [[ "$VARTYPE" == "UEFI" ]]
 then 
-                echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
-                mkfs.fat -F32 "$DISK"1 #Formating EFI Fat32
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
+                        mkfs.fat -F32 "$DISK"1 #Formating EFI Fat32
+                else
+                        echo -e '\e[32m=> \e[94m Formating EFI Fat32\e[39m'
+                        mkfs.fat -F32 "$DISK"p1 #Formating EFI Fat32
+                fi
 fi
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
-                mkfs.ext4 /dev/mapper/c_sda3 #Formating Encrypted /root EXT4
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                        mkfs.ext4 /dev/mapper/c_sda3 #Formating Encrypted /root EXT4
+                else
+                        echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                        mkfs.ext4 /dev/mapper/c_nvm3 #Formating Encrypted /root EXT4
+                fi
         else
-                echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
-                mkfs.ext4 /dev/mapper/c_sda2 #Formating Encrypted /root EXT4
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                        mkfs.ext4 /dev/mapper/c_sda2 #Formating Encrypted /root EXT4
+                else
+                        echo -e '\e[32m=> \e[94m Formating Encrypted /root EXT4\e[39m'
+                        mkfs.ext4 /dev/mapper/c_nvm2 #Formating Encrypted /root EXT4
+                fi
         fi
 else
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
-                mkfs.ext4 "$DISK"3 #Formating /root EXT4
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                        mkfs.ext4 "$DISK"3 #Formating /root EXT4
+                else
+                        echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                        mkfs.ext4 "$DISK"p3 #Formating /root EXT4
+                fi
         else
-                echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
-                mkfs.ext4 "$DISK"2 #Formating /root EXT4
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                        mkfs.ext4 "$DISK"2 #Formating /root EXT4
+                else
+                        echo -e '\e[32m=> \e[94m Formating /root EXT4\e[39m'
+                        mkfs.ext4 "$DISK"p2 #Formating /root EXT4
+                fi
         fi
 fi
 
 if [[ "$VARTYPE" == "UEFI" ]]
 then
-        echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-        mkswap "$DISK"2 #Setting Swap for SWAP Partition
+        if [[ "$DISKTYPE" == "SDA" ]]
+        then    
+                echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+                mkswap "$DISK"2 #Setting Swap for SWAP Partition
 
-        echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
-        swapon "$DISK"2 #Enabling SWAP
+                echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+                swapon "$DISK"2 #Enabling SWAP
+        else
+                echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+                mkswap "$DISK"p2 #Setting Swap for SWAP Partition
+
+                echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+                swapon "$DISK"p2 #Enabling SWAP
+        fi
 else
-        echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
-        mkswap "$DISK"1 #Setting Swap for SWAP Partition
+        if [[ "$DISKTYPE" == "SDA" ]]
+        then    
+                echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+                mkswap "$DISK"1 #Setting Swap for SWAP Partition
 
-        echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
-        swapon "$DISK"1 #Enabling SWAP
+                echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+                swapon "$DISK"1 #Enabling SWAP
+        else
+                echo -e '\e[32m=> \e[94m Setting Swap for SWAP Partition\e[39m'
+                mkswap "$DISK"p1 #Setting Swap for SWAP Partition
+
+                echo -e '\e[32m=> \e[94m Enabling SWAP\e[39m'
+                swapon "$DISK"p1 #Enabling SWAP
+        fi
 fi
 
 if [[ "$ENCRYPT" == "YES" ]]
 then
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
-                mount /dev/mapper/c_sda3 /mnt #Mounting Encrypted root
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                        mount /dev/mapper/c_sda3 /mnt #Mounting Encrypted root
+                else
+                        echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                        mount /dev/mapper/c_nvm3 /mnt #Mounting Encrypted root
+                fi
         else
-                echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
-                mount /dev/mapper/c_sda2 /mnt #Mounting Encrypted root
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                        mount /dev/mapper/c_sda2 /mnt #Mounting Encrypted root
+                else
+                        echo -e '\e[32m=> \e[94m Mounting Encrypted root\e[39m'
+                        mount /dev/mapper/c_nvm2 /mnt #Mounting Encrypted root
+                fi
         fi
 else
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-                echo -e '\e[32m=> \e[94m Mounting root\e[39m'
-                mount "$DISK"3 /mnt #Mounting root
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                        mount "$DISK"3 /mnt #Mounting root
+                else
+                        echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                        mount "$DISK"p3 /mnt #Mounting root
+                fi
         else
-                echo -e '\e[32m=> \e[94m Mounting root\e[39m'
-                mount "$DISK"2 /mnt #Mounting root
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                        mount "$DISK"2 /mnt #Mounting root
+                else
+                        echo -e '\e[32m=> \e[94m Mounting root\e[39m'
+                        mount "$DISK"p2 /mnt #Mounting root
+                fi
         fi
 fi
 
@@ -298,8 +393,14 @@ mkdir /mnt/boot #Creating /boot Directory
 
 if [[ "$VARTYPE" == "UEFI" ]]
 then
-        echo -e '\e[32m=> \e[94m Mount EFI\e[39m'
-        mount "$DISK"1 /mnt/boot #Mounting EFI to /boot
+        if [[ "$DISKTYPE" == "SDA" ]]
+        then    
+                echo -e '\e[32m=> \e[94m Mount EFI\e[39m'
+                mount "$DISK"1 /mnt/boot #Mounting EFI to /boot
+        else
+                echo -e '\e[32m=> \e[94m Mount EFI\e[39m'
+                mount "$DISK"p1 /mnt/boot #Mounting EFI to /boot
+        fi
 fi
 
 if [[ "$VARTIMEZONE" == "Europe/Paris" ]]
@@ -410,13 +511,27 @@ sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"pa
 
         if [[ "$VARTYPE" == "UEFI" ]]
         then
-        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
 GUIDMAPPER=$(blkid | grep ^"$DISK"3 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+                else
+                        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+GUIDMAPPER=$(blkid | grep ^"$DISK"p3 | awk -F "\"" '{print $2}') #Get device GUID
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda3 root=\/dev\/mapper\/c_sda3 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+                fi
         else
-                echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+                if [[ "$DISKTYPE" == "SDA" ]]
+                then    
+                        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
 GUIDMAPPER=$(blkid | grep ^"$DISK"2 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+                else
+                        echo "echo -e '\e[32m=> \e[94m Adding Linux CMDLINE in GRUB\e[39m'
+GUIDMAPPER=$(blkid | grep ^"$DISK"p2 | awk -F "\"" '{print $2}') #Get device GUID
+sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_sda2 root=\/dev\/mapper\/c_sda2 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub #Adding Linux CMDLINE in GRUB" >> /mnt/AutoInstall2.sh
+                fi
         fi
 fi
 
@@ -476,6 +591,10 @@ mkdir /root/.config/i3
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/config > /root/.config/i3/config
 
 wget https://raw.githubusercontent.com/mickdec/Esper/master/RES/READMERES/Esper-1920x1080.png?token=AH352UXZSQPPWXIQACUD5TDBKHFG2 -O /root/.config/bg.jpg
+
+printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
+systemctl restart wpa*
+wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
 
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
 #systemctl enable lightdm" >> /mnt/AutoConfig.sh
