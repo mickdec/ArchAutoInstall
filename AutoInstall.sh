@@ -151,7 +151,7 @@ read DISK
 
 if [[ "$DISK" != *"sda"* ]]
 then
-        $DISKTYPE="nvme"
+        DISKTYPE="nvme"
 fi
 
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
@@ -595,6 +595,17 @@ wget https://raw.githubusercontent.com/mickdec/Esper/master/RES/READMERES/Esper-
 printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
 systemctl restart wpa*
 wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+
+useradd -G -s /usr/bin/zsh mickdec
+
+###### SECURITY PACKAGE PART
+#burpsuite
+cd /home/mickdec
+sudo -u mickdec bash -c 'git clone https://aur.archlinux.org/burpsuite.git'
+cd burpsuite
+pacman -S java-runtime -y
+makepkg
+pacman -U burpsuite
 
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
 #systemctl enable lightdm" >> /mnt/AutoConfig.sh
