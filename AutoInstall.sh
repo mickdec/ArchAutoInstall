@@ -19,8 +19,13 @@ check_www(){
                 echo "You are perfectly connected to the World Wide Web. Cool."
         else
                 echo "You are not connected to the World Wide Web.. Running the manager."
-                wifi-menu ens33
-                check_www
+                ESSID=""
+                PASS=""
+                echo "Enter is the name (ESSID) of your network :"
+                echo "Enter the password :"
+                printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
+                systemctl restart wpa*
+                wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
         fi
 }
 check_www
