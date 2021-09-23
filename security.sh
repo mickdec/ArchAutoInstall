@@ -3,9 +3,9 @@ chmod 700 /root
 
 chmod 027 /etc/profile
 
-pacman -S docker nmap usbguard rkhunter
+pacman -S docker nmap usbguard rkhunter wireshark-qt
 
-# burpsuite crunch patator wireshark
+# burpsuite crunch patator
 
 systemctl disable sshd
 systemctl disable docker.service
