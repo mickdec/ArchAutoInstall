@@ -12,9 +12,6 @@ SSH="YES"
 I3="YES"
 DISKTYPE="SDA"
 
-#Setting by default the rapid install
-set -- "-GONNAGOFAST"
-
 #Base paquets for Arch
 PACKETS="base linux wpa_supplicant linux-firmware sudo nano wget dhcpcd grub openssh firefox"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
@@ -67,13 +64,13 @@ check_encrypt
 
 #Function to ask you if you want i3
 check_i3(){
-        if [[ "$I3" != "YES" && "$I3" != "NO" ]]
-        then
+        while [[ "$I3" != "YES" && "$I3" != "NO" ]]
+        do
                 echo -e '\e[32mDo yo want install i3 on your system ? [YES/NO] :\e[39m'
                 read I3
                 echo -e "\e[32mPlease enter YES or NO in uppercase\e[39m"
-                check_i3
-        fi
+                read I3
+        done
 }
 check_i3
 
@@ -97,13 +94,10 @@ else
                 VARKBDLAYOUT="azerty"
                 echo $VARKBDLAYOUT 
         fi
-        #Asking your timezone
-        echo -e '\e[32mEnter your time zone [Europe/Paris|auto] :\e[39m'
+        #Asking your timezone (need to add other timezones)
+        echo -e '\e[32mEnter your time zone [Europe/Paris] :\e[39m'
         read VARTIMEZONE
-        if [[ "$VARTIMEZONE" == auto ]]
-        then
-                VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
-        elif [[ "$VARTIMEZONE" != "Europe/Paris" ]]
+        if [[ "$VARTIMEZONE" != "Europe/Paris" ]]
         then    
                 echo -e '\e[31mBad TimeZone. Going Auto\e[39m'
                 VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
@@ -128,11 +122,20 @@ else
         echo -e '\e[32mEnter Hostname :\e[39m'
         read VARHOSTNAME
 fi
+
+#Showing the disks, the partitions to properly let you choose where you want to install the system
+lsblk
+ls /dev/sd*
+ls /dev/nvm*
+echo -e '\e[32mWhat disk do you want to use for the installation (/dev/sdX) (Dont forget the /dev/) ? :\e[39m'
+read DISK
+
 #Showing you where you are at
 echo -e '\e[31mVariables resume :\e[39m'
 echo -e '\e[31mInstall Type :\e[39m' $VARTYPE
 echo -e '\e[31mTimeZone :\e[39m' $VARTIMEZONE
 echo -e '\e[31mKeyboard Layout :\e[39m' $VARKBDLAYOUT
+echo -e '\e[31mDisk to work on :\e[39m' $DISK
 echo -e '\e[31mEFI Size :\e[39m' $VAREFISIZE
 echo -e '\e[31mSWAP Size :\e[39m' $VARSWAPSIZE
 echo -e '\e[31m/ Size :\e[39m' $VARROOTSIZE
@@ -161,13 +164,6 @@ timedatectl set-ntp true #Set timestamp locale
 
 echo -e '\e[32m=> \e[94m Set time zone to '$VARTIMEZONE'\e[39m'
 timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
-
-#Showing the disks, the partitions to properly let you choose where you want to install the system
-lsblk
-ls /dev/sd*
-ls /dev/nvm*
-echo -e '\e[32mWhat disk do you want to use for the installation (/dev/sdX) (Dont forget the /dev/) ? :\e[39m'
-read DISK
 
 #if you dont choose an sda disk, setting the variable for an nvme
 if [[ "$DISK" != *"sda"* ]]
@@ -235,9 +231,21 @@ bios_parts(){
 #if its UEFI, start the partition process for UEFI, else for BIOS (come on its an if, why are you reading this.)
 if [[ "$VARTYPE" == "UEFI" ]]
 then
-        uefi_parts
+        #Going manual if you dont want to be sonic
+        if [[ "$1" == "-GONNAGOFAST" ]]
+        then
+                uefi_parts
+        else
+                fdisk $DISK
+        fi
 else
-        bios_parts
+        #Going manual if you dont want to be sonic
+        if [[ "$1" == "-GONNAGOFAST" ]]
+        then
+                bios_parts
+        else
+                fdisk $DISK
+        fi
 fi
 
 #Using luks to crypt the / partition, asking you the password to do it, and reasking to opening it.
