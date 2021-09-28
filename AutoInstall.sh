@@ -491,15 +491,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
-cp /etc/X11/xinit/xinitrc ~/.xinitrc
-for i in 1 2 3 4 5
-do
-  sed -i '\$d' ~/.xinitrc
-done
-echo \"setxkbmap fr
-export TERMINAL=urxvt
-exec i3\" >> ~/.xinitrc" >> /mnt/AutoConfig.sh
+        echo "pacman --noconfirm -S feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk" >> /mnt/AutoConfig.sh
 
 echo "echo \"[Unit]
 Description=startx automatique pour l'utilisateur %I
@@ -529,11 +521,13 @@ EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
 curl -L http://install.ohmyz.sh/ | sh
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.p10k.zsh > /root/.p10k.zsh
-curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.zshrc > /root/.zshrc
-curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bashrc > /root/.bashrc
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bash_profile > /root/.bash_profile
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.bashrc > /root/.bashrc
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.p10k.zsh > /root/.p10k.zsh
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xdefaults > /root/.Xdefaults
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.xinitrc > /root/.xinitrc
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.Xresources > /root/.Xresources
+curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/.zshrc > /root/.zshrc
 mkdir /root/.config
 mkdir /root/.config/i3
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/config > /root/.config/i3/config
