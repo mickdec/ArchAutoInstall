@@ -248,6 +248,7 @@ then
                 uefi_parts
         else
                 fdisk $DISK
+                printf "p\nq\n" | fdisk $DISK
                 echo -e '\e[32mEnter your EFI partition name (with the /dev/) :\e[39m'
                 read PARTITION1
                 echo -e '\e[32mEnter your SWAP partition name (with the /dev/) :\e[39m'
@@ -262,6 +263,7 @@ else
                 bios_parts
         else
                 fdisk $DISK
+                printf "p\nq\n" | fdisk $DISK
                 echo -e '\e[32mEnter your EFI partition name (with the /dev/) :\e[39m'
                 read PARTITION1
                 echo -e '\e[32mEnter your SWAP partition name (with the /dev/) :\e[39m'
