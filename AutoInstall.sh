@@ -229,6 +229,7 @@ bios_parts(){
 }
 
 if [[ "$DISKTYPE" == "nvme" ]]
+then
         PARTITION1=$DISK"p1"
         PARTITION2=$DISK"p2"
         PARTITION3=$DISK"p3"
