@@ -538,22 +538,22 @@ mkdir /root/.config
 mkdir /root/.config/i3
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/config > /root/.config/i3/config
 
-wget https://raw.githubusercontent.com/mickdec/Esper/master/RES/READMERES/Esper-1920x1080.png?token=AH352UXZSQPPWXIQACUD5TDBKHFG2 -O /root/.config/bg.jpg
+wget https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/Esper-1920x1080.png -O /root/.config/bg.jpg
 
-printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
-systemctl restart wpa*
-wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+# printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
+# systemctl restart wpa*
+# wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
 
-useradd -G -s /usr/bin/zsh mickdec
+# useradd -G -s /usr/bin/zsh mickdec
 
 ###### SECURITY PACKAGE PART
 #burpsuite
-cd /home/mickdec
-sudo -u mickdec bash -c 'git clone https://aur.archlinux.org/burpsuite.git'
-cd burpsuite
-pacman -S java-runtime -y
-makepkg
-pacman -U burpsuite
+# cd /home/mickdec
+# sudo -u mickdec bash -c 'git clone https://aur.archlinux.org/burpsuite.git'
+# cd burpsuite
+# pacman -S java-runtime -y
+# makepkg
+# pacman -U burpsuite
 
 #sudo pacman -S lightdm lightdm-gtk-greeter -y
 #systemctl enable lightdm" >> /mnt/AutoConfig.sh
