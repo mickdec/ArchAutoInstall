@@ -534,8 +534,7 @@ curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/co
 
 wget https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/Esper-1920x1080.png -O /root/.config/bg.jpg
 
-# printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
-# systemctl restart wpa*
+printf $PASS"\n"|wpa_passphrase $ESSID > /etc/wpa_supplicant/wpa_supplicant.conf
 # wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
 
 # useradd -G -s /usr/bin/zsh mickdec
