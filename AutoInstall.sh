@@ -3,22 +3,29 @@
 # Author : DECELLE Mickael                             #
 # Contact : https://github.com/mickdec/ArchAutoInstall #
 ########################################################
+#Commented for kiddys.
 
+#Rapid installation variables
 DISK="/dev/sda"
 ENCRYPT="YES"
 SSH="YES"
 I3="YES"
 DISKTYPE="SDA"
+
+#Setting by default the rapid install
 set -- "-GONNAGOFAST"
 
+#Base paquets for Arch
 PACKETS="base linux wpa_supplicant linux-firmware sudo nano wget dhcpcd grub openssh firefox"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
+#Internet check fonction (like is name says)
 check_www(){
         echo "Testing your internet connection..."
         if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
                 echo "You are perfectly connected to the World Wide Web. Cool."
         else
+                #Wifi connection process
                 echo "You are not connected to the World Wide Web.. Running the manager."
                 ESSID=""
                 PASS=""
@@ -33,8 +40,10 @@ check_www(){
 }
 check_www
 
+#Checking the EFI state (like the variable name says again)
 EFICHECK=$(ls /sys/firmware/efi/efivars)
 
+#If its an EFI install we set the VARTYPE to UEFI else, we set it to BIOS.
 if [[ ${#EFICHECK} -ge 20 ]]
 then
         VARTYPE="UEFI"
@@ -44,6 +53,7 @@ else
         echo -e "\e[94mBIOS \e[32mtype detected.\e[39m"
 fi
 
+#Function to ask you if you want to encrypt the / partition
 check_encrypt(){
         while [[ "$ENCRYPT" != "YES" && "$ENCRYPT" != "NO" ]]
         do
@@ -55,7 +65,7 @@ check_encrypt(){
 }
 check_encrypt
 
-
+#Function to ask you if you want i3
 check_i3(){
         if [[ "$I3" != "YES" && "$I3" != "NO" ]]
         then
@@ -67,17 +77,18 @@ check_i3(){
 }
 check_i3
 
-
+#If you choose to be sonic, speeding up the process, if you choose to be a snail, asking a lot of variables.
 if [[ "$1" == "-GONNAGOFAST" ]]
 then
         #VARTIMEZONE=$(curl --fail https://ipapi.co/timezone) NOT WORKING RN
-        VARTIMEZONE="Europe/Paris" #FOR ESGI
+        VARTIMEZONE="Europe/Paris"
         VARKBDLAYOUT="azerty"
         VAREFISIZE="512M"
         VARSWAPSIZE="3G"
         VARROOTSIZE="ENDSECTOR"
         VARHOSTNAME="PEN"
 else
+        #Asking your kbd layout
         echo -e '\e[32mEnter your keyboard layout [azerty|qwerty] :\e[39m'
         read VARKBDLAYOUT
         if [[ "$VARKBDLAYOUT" != "azerty" || "$VARKBDLAYOUT" != "qwerty" ]]
@@ -86,6 +97,7 @@ else
                 VARKBDLAYOUT="azerty"
                 echo $VARKBDLAYOUT 
         fi
+        #Asking your timezone
         echo -e '\e[32mEnter your time zone [Europe/Paris|auto] :\e[39m'
         read VARTIMEZONE
         if [[ "$VARTIMEZONE" == auto ]]
@@ -97,10 +109,13 @@ else
                 VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
                 echo $VARTIMEZONE
         fi
+        #Asking the size for the EFI partition
         echo -e '\e[32mEnter EFI partition size [+512M] :\e[39m'
         read VAREFISIZE
+        #Asking the size for the SWAP partition
         echo -e '\e[32mEnter SWAP partition size [+5G] :\e[39m'
         read VARSWAPSIZE
+        #Asking the size for the / partition (ps thats not secure.)
         echo -e '\e[32mEnter / partition size [ENDSECTOR] :\e[39m'
         read VARROOTSIZE
         if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
@@ -109,9 +124,11 @@ else
                 ENCRYPT="YES"
                 echo $ENCRYPT
         fi
+        #Asking your computer hostname
         echo -e '\e[32mEnter Hostname :\e[39m'
         read VARHOSTNAME
 fi
+#Showing you where you are at
 echo -e '\e[31mVariables resume :\e[39m'
 echo -e '\e[31mInstall Type :\e[39m' $VARTYPE
 echo -e '\e[31mTimeZone :\e[39m' $VARTIMEZONE
@@ -125,12 +142,14 @@ echo -e '\e[31mHostname :\e[39m' $VARHOSTNAME
 echo -e '\e[32mPRESS ENTER TO START THE INSTALLATION\e[39m'
 read DUMMY
 
+#The support for a bios encryption is elsewhere right now.
 if [[ "$VARTYPE" == "BIOS" && "$ENCRYPT" == "YES" ]]
 then
         echo "Didn't supporting BIOS with encrypted partition atm..."
         exit
 fi
 
+#If its an azerty kbd
 if [[ "$VARKBDLAYOUT" == "azerty" ]]
 then
         echo -e '\e[32m=> \e[94m Change Keyboard AZERTY FR\e[39m'
@@ -143,33 +162,34 @@ timedatectl set-ntp true #Set timestamp locale
 echo -e '\e[32m=> \e[94m Set time zone to '$VARTIMEZONE'\e[39m'
 timedatectl set-timezone $VARTIMEZONE #Set time zone to Europe Paris
 
+#Showing the disks, the partitions to properly let you choose where you want to install the system
 lsblk
 ls /dev/sd*
 ls /dev/nvm*
 echo -e '\e[32mWhat disk do you want to use for the installation (/dev/sdX) (Dont forget the /dev/) ? :\e[39m'
 read DISK
 
+#if you dont choose an sda disk, setting the variable for an nvme
 if [[ "$DISK" != *"sda"* ]]
 then
         DISKTYPE="nvme"
 fi
 
+#Creating the partitions with fdisk.
 echo -e '\e[32m=> \e[94m Create partitions\e[39m'
 uefi_parts(){
         (
         echo o      #New disklabel
         #EFI
         echo n      #New Partition
-        echo p      #Primary
-        echo 1      #First partition
+        echo        #First partition
         echo        #Default Sector start
         echo +$VAREFISIZE  #512MiB
         echo t      #Change type
         echo ef     #EFI
         #SWAP
         echo n      #New Partition
-        echo p      #Primary
-        echo 2      #Second partition
+        echo        #Second partition
         echo        #Default Sector start
         echo +$VARSWAPSIZE    #5Gigas
         echo t      #Change type
@@ -177,8 +197,7 @@ uefi_parts(){
         echo 82     #Linux SWAP
         #ROOT
         echo n      #New Partition
-        echo p      #Primary
-        echo 3      #Third partition
+        echo        #Third partition
         echo        #Default Sector start
         echo 
         echo t      #Change type
@@ -186,7 +205,7 @@ uefi_parts(){
         echo 83     #Linux
         #WRITE
         echo w
-        ) | sudo fdisk --wipe-partitions always $DISK #Start fdisk with all preceding commands
+        ) | sudo fdisk --wipe-partitions always $DISK
 }
 bios_parts(){
         (
@@ -213,6 +232,7 @@ bios_parts(){
         ) | sudo fdisk --wipe-partitions always $DISK #Start fdisk with all preceding commands
 }
 
+#if its UEFI, start the partition process for UEFI, else for BIOS (come on its an if, why are you reading this.)
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         uefi_parts
@@ -220,7 +240,7 @@ else
         bios_parts
 fi
 
-
+#Using luks to crypt the / partition, asking you the password to do it, and reasking to opening it.
 if [[ "$ENCRYPT" == "YES" ]]
 then
         if [[ "$VARTYPE" == "UEFI" ]]
@@ -424,6 +444,22 @@ fi
 echo -e '\e[32m=> \e[94m Generate fstab\e[39m'
 genfstab -U /mnt >> /mnt/etc/fstab #Generate fstab
 
+#The AutoInstall2.sh script generated is usefull after a clean and fresh install.
+#This script will prepare i3, the system configuration, grub, the kbd layout, all the systemd services.
+#I will not comment it, because comments cant be placed in echo write block like that. (its not always ez kiddys)
+#So we are :
+#Setting up the system clock
+#Generating the source list
+#Generationg the SSHD config
+#Generation the HOSTNAME, and the LOCALDOMAIN config
+#Enabling DHCPD
+#Generating the fstab
+#Setting up the BootLoader
+#Setting up the root password (thats not secure)
+#Generating the GRUB config to decrypt or not the / partition etc..
+#Installing i3-gaps packages and all the dependencies (like Xorg) and zsh, uxrvt...
+#Downloading the config for uxrvt, zsh, omzsh...
+#Generating the WIFI config..
 echo -e '\e[32m=> \e[94m Generate Local AutoInstall2.sh\e[39m'
 echo "echo -e '\e[32m=> \e[94m Create Link with zoneinfo "$VARTIMEZONE" to /etc/localtime\e[39m'
 ln -sf /usr/share/zoneinfo/"$VARTIMEZONE" /etc/localtime #Create Link with zoneinfo "$VARTIMEZONE" to /etc/localtime
