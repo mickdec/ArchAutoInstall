@@ -74,6 +74,11 @@ check_i3(){
 }
 check_i3
 
+VAREFISIZE="MANUAL"
+VARSWAPSIZE="MANUAL"
+VARROOTSIZE="MANUAL"
+ENCRYPT="YES"
+
 #If you choose to be sonic, speeding up the process, if you choose to be a snail, asking a lot of variables.
 if [[ "$1" == "-GONNAGOFAST" ]]
 then
@@ -102,21 +107,6 @@ else
                 echo -e '\e[31mBad TimeZone. Going Auto\e[39m'
                 VARTIMEZONE=$(curl --fail https://ipapi.co/timezone)
                 echo $VARTIMEZONE
-        fi
-        #Asking the size for the EFI partition
-        echo -e '\e[32mEnter EFI partition size [+512M] :\e[39m'
-        read VAREFISIZE
-        #Asking the size for the SWAP partition
-        echo -e '\e[32mEnter SWAP partition size [+5G] :\e[39m'
-        read VARSWAPSIZE
-        #Asking the size for the / partition (ps thats not secure.)
-        echo -e '\e[32mEnter / partition size [ENDSECTOR] :\e[39m'
-        read VARROOTSIZE
-        if [[ "$ENCRYPT" != "YES" || "$ENCRYPT" != "NO" ]]
-        then
-                echo -e '\e[31mBad Encrypt. Going YES\e[39m'
-                ENCRYPT="YES"
-                echo $ENCRYPT
         fi
         #Asking your computer hostname
         echo -e '\e[32mEnter Hostname :\e[39m'
