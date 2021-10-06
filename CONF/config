@@ -1,5 +1,5 @@
 set $mod Mod4
-font pango:monospace 8
+font pango:ttf-hack 8
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -8,12 +8,23 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 floating_modifier $mod
+bindsym --release Print exec "gnome-screenshot -acf /tmp/pic && cat /tmp/pic | xclip -i -selection clipboard -target image/png | rm -Rf /tmp/pic"
+#bindsym Ctrl+c exec --no-startup-id maim | xclip -i 
+#bindsym Ctrl+v exec xclip -o
+bindsym $mod+Ctrl+Left resize grow width 1 px or 1 ppt
+bindsym $mod+Ctrl+Down resize shrink height 1 px or 1 ppt
+bindsym $mod+Ctrl+Up resize grow height 1 px or 1 ppt
+bindsym $mod+Ctrl+Right resize shrink width 1 px or 1 ppt
 bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Shift+a kill
-bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Escape kill
+bindsym $mod+f exec firefox
+bindsym $mod+c exec /usr/share/vscodium/codium --no-sandbox
+#bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+l exec i3lock -c 000000 -n
+bindsym $mod+d exec "discord --no-sandbox"
 bindsym $mod+j focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
+#bindsym $mod+l focus up
 bindsym $mod+m focus right
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -27,9 +38,9 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-bindsym $mod+h split h
-bindsym $mod+v split v
-bindsym $mod+f fullscreen toggle
+#bindsym $mod+h split h
+#bindsym $mod+v split v
+#bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
 bindsym $mod+z layout tabbed
 bindsym $mod+e layout toggle split
@@ -83,16 +94,30 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode "resize"
+
 bar {
         status_command i3status
+	colors {
+		separator #444444
+		focused_workspace #CECECE #CECECE #000000
+		active_workspace #333333 #333333 #888888
+		inactive_workspace #CECECE #333333 #F1F1F1
+		urgent_workspace #EB709B #EB709B #FFFFFF
+	}
 }
+
 client.focused              #bf616a #2f343f #d8dee8 #bf616a #d8dee8
 client.focused_inactive     #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.unfocused            #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.urgent               #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.background           #2f343f
+
 gaps inner 20
-gaps outer -5
+gaps outer -15
+smart_gaps on
+smart_borders on
+
 for_window [class="^.*"] border pixel 1
-exec feh --bg-scale /root/.config/bg.jpg
+exec feh --bg-scale /root/.config/bg2.png
+exec setxkbmap fr
