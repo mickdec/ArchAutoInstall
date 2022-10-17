@@ -636,7 +636,8 @@ MaxAuthTries 3
 LogLevel verbose
 Compression no
 ClientAliveCountMax 2
-AllowTcpForwarding no\" > /etc/ssh/sshd_config" >> /mnt/Security.sh
+AllowTcpForwarding no\" > /etc/ssh/sshd_config
+wget https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/jail.local -O /etc/fail2ban/jail.conf" >> /mnt/Security.sh
 
 echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoConfig.sh\e[39m'
 chmod 777 /mnt/Security.sh
