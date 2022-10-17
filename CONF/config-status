@@ -1,0 +1,50 @@
+general {
+        colors = true
+        interval = 5
+}
+
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "run_watch vpn"
+order += "battery all"
+order += "disk /"
+order += "memory"
+order += "cpu_temperature 0"
+order += "tztime local"
+
+wireless _first_ {
+        format_up = "W: %ip"
+        format_down = "W: down"
+}
+
+ethernet _first_ {
+        format_up = "E: %ip"
+        format_down = "E: down"
+}
+
+path_exists vpn {
+	path = "/proc/sys/net/ipv4/conf/tun0"
+}
+
+battery all {
+        format = "%status %percentage %remaining"
+}
+
+disk "/" {
+        format = "/ %avail"
+}
+
+memory {
+        format = "MEM %available"
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
+}
+
+cpu_temperature 0 {
+	format = "CPU: %degrees C"
+	path = "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input"
+}
+
+tztime local {
+        format = "%d-%m-%Y %H:%M:%S"
+}
