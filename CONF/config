@@ -113,8 +113,8 @@ client.urgent               #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.background           #2f343f
 
-gaps inner 20
-gaps outer -15
+gaps inner 1
+gaps outer -1
 smart_gaps on
 smart_borders on
 
