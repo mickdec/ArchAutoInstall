@@ -491,7 +491,7 @@ exit" >> /mnt/AutoInstall2.sh #Generate Local AutoInstall2.sh
 
 if [[ "$I3" == "YES" ]]
 then
-        echo "pacman --noconfirm -S feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk" >> /mnt/AutoConfig.sh
+        echo "pacman --noconfirm -Sy feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk" >> /mnt/AutoConfig.sh
 
 echo "echo \"[Unit]
 Description=startx automatique pour l'utilisateur %I
@@ -533,7 +533,7 @@ mkdir /root/.config/i3
 curl -L https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/config > /root/.config/i3/config
 
 wget https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/Esper-1920x1080.png -O /root/.config/bg.jpg
-sudo pacman -Sy i3lock
+sudo pacman --noconfirm -Sy i3lock
 mkdir /root/.config/i3status
 wget https://raw.githubusercontent.com/mickdec/ArchAutoInstall/master/CONF/config-status -O /root/.config/i3status/config" >> /mnt/AutoConfig.sh
 fi
