@@ -558,7 +558,7 @@ chmod 700 /root
 
 chmod 027 /etc/profile
 
-pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban arch-audit macchanger
+pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban arch-audit macchanger fakeroot
 
 # burpsuite crunch patator
 

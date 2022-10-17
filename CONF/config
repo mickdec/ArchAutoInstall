@@ -121,3 +121,4 @@ smart_borders on
 for_window [class="^.*"] border pixel 1
 exec feh --bg-scale /root/.config/bg.jpg
 exec setxkbmap fr
+exec change_mac
