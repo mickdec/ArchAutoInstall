@@ -558,7 +558,7 @@ chmod 700 /root
 
 chmod 027 /etc/profile
 
-pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban
+pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban arch-audit
 
 # burpsuite crunch patator
 
@@ -579,10 +579,10 @@ echo '*               hard    core            0' >> /etc/security/limits.conf
 
 echo \"#################################################################
 #                   _    _           _   _                      #
-#                  / \  | | ___ _ __| |_| |                     #
-#                 / _ \ | |/ _ \ '__| __| |                     #
-#                / ___ \| |  __/ |  | |_|_|                     #
-#               /_/   \_\_|\___|_|   \__(_)                     #
+#                  / \\  | | ___ _ __| |_| |                     #
+#                 / _ \\ | |/ _ \\ '__| __| |                     #
+#                / ___ \\| |  __/ |  | |_|_|                     #
+#               /_/   \\_\\_|\\___|_|   \\__(_)                     #
 #                                                               #
 #  You are entering into a secured area! Your IP, Login Time,   #
 #   Username has been noted and has been sent to the server     #
@@ -595,10 +595,10 @@ echo \"#################################################################
 
 echo \"#################################################################
 #                   _    _           _   _                      #
-#                  / \  | | ___ _ __| |_| |                     #
-#                 / _ \ | |/ _ \ '__| __| |                     #
-#                / ___ \| |  __/ |  | |_|_|                     #
-#               /_/   \_\_|\___|_|   \__(_)                     #
+#                  / \\  | | ___ _ __| |_| |                     #
+#                 / _ \\ | |/ _ \\ '__| __| |                     #
+#                / ___ \\| |  __/ |  | |_|_|                     #
+#               /_/   \\_\\_|\\___|_|   \\__(_)                     #
 #                                                               #
 #  You are entering into a secured area! Your IP, Login Time,   #
 #   Username has been noted and has been sent to the server     #
