@@ -13,7 +13,7 @@ I3="YES"
 DISKTYPE="SDA"
 
 #Base paquets for Arch
-PACKETS="base linux linux_firmware wpa_supplicant sudo nano wget dhcpcd grub openssh firefox ntfs-3g"
+PACKETS="base linux linux-firmware wpa_supplicant sudo nano wget dhcpcd grub openssh firefox ntfs-3g"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 #Internet check fonction (like is name says)
