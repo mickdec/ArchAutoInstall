@@ -13,7 +13,7 @@ I3="YES"
 DISKTYPE="SDA"
 
 #Base paquets for Arch
-PACKETS="base linux linux-firmware wpa_supplicant sudo nano wget dhcpcd grub openssh firefox ntfs-3g pulseaudio make gcc noto-fonts-cjk"
+PACKETS="base linux linux-firmware wpa_supplicant sudo nano wget dhcpcd grub openssh firefox ntfs-3g pulseaudio make gcc noto-fonts-cjk virtualbox-host-dkms"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 #Internet check fonction (like is name says)
@@ -558,7 +558,7 @@ chmod 700 /root
 
 chmod 027 /etc/profile
 
-pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban arch-audit macchanger fakeroot
+pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban arch-audit macchanger fakeroot jre17-openjdk gnu-netcat tcpdump
 
 # burpsuite crunch patator
 
