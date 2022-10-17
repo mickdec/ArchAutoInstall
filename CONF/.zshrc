@@ -8,6 +8,8 @@ source $ZSH/oh-my-zsh.sh
 export LANG=fr_FR.UTF-8
 alias update="pacman -Syyu"
 alias connect_mick="wpa_supplicant -B -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf"
+alias disconnect="killall wpa_supplicant"
+alias change_mac="disconnect;ip link set wlp2s0 down;ip link set enp5s0 down;macchanger -Ap wlp2s0;macchanger -Ap enp5s0;ip link set wlp2s0 up;ip link set enp5s0 up"
 alias firefox="bash -c 'firefox &'; exit"
 alias ll="ls -al"
 alias discord="bash -c 'discord --no-sandbox &'; exit"
