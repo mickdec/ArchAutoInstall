@@ -3,7 +3,7 @@ chmod 700 /root
 
 chmod 027 /etc/profile
 
-pacman -S docker nmap usbguard rkhunter wireshark-qt
+pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban
 
 # burpsuite crunch patator
 

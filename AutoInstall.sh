@@ -544,10 +544,6 @@ chmod 777 /mnt/AutoInstall2.sh
 echo -e '\e[32m=> \e[94m Starting AutoInstall2.sh in chroot\e[39m'
 arch-chroot /mnt ./AutoInstall2.sh
 
-echo -e '\e[32m=> \e[94mRemoving AutoInstall2.sh\e[39m'
-rm -Rf /mnt/AutoInstall2.sh
-
-
 if [[ "$I3" == "YES" ]]
 then
         echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoConfig.sh\e[39m'
@@ -556,6 +552,101 @@ then
         echo -e '\e[32m=> \e[94m Starting AutoConfig.sh for i3 in chroot\e[39m'
         arch-chroot /mnt ./AutoConfig.sh
 fi
+
+echo "chmod 444 /etc/ssh/sshd_config
+chmod 700 /root
+
+chmod 027 /etc/profile
+
+pacman -S docker nmap usbguard rkhunter wireshark-qt fail2ban
+
+# burpsuite crunch patator
+
+systemctl disable sshd
+systemctl disable docker.service
+systemctl enable apparmor
+systemctl enable shadow.service
+systemctl enable systemd-rfkill.service
+systemctl enable systemd-ask-password-console.service
+systemctl enable systemd-ask-password-wall.service
+systemctl enable rescue.service
+systemctl enable emergency.service
+systemctl enable systemd-rfkill.service
+systemctl enable dm-event.service
+systemctl enable auditd.service
+
+echo '*               hard    core            0' >> /etc/security/limits.conf
+
+echo \"#################################################################
+#                   _    _           _   _                      #
+#                  / \  | | ___ _ __| |_| |                     #
+#                 / _ \ | |/ _ \ '__| __| |                     #
+#                / ___ \| |  __/ |  | |_|_|                     #
+#               /_/   \_\_|\___|_|   \__(_)                     #
+#                                                               #
+#  You are entering into a secured area! Your IP, Login Time,   #
+#   Username has been noted and has been sent to the server     #
+#                       administrator!                          #
+#   This service is restricted to authorized users only. All    #
+#            activities on this system are logged.              #
+#  Unauthorized access will be fully investigated and reported  #
+#        to the appropriate law enforcement agencies.           #
+#################################################################\" > /etc/issue.net
+
+echo \"#################################################################
+#                   _    _           _   _                      #
+#                  / \  | | ___ _ __| |_| |                     #
+#                 / _ \ | |/ _ \ '__| __| |                     #
+#                / ___ \| |  __/ |  | |_|_|                     #
+#               /_/   \_\_|\___|_|   \__(_)                     #
+#                                                               #
+#  You are entering into a secured area! Your IP, Login Time,   #
+#   Username has been noted and has been sent to the server     #
+#                       administrator!                          #
+#   This service is restricted to authorized users only. All    #
+#            activities on this system are logged.              #
+#  Unauthorized access will be fully investigated and reported  #
+#        to the appropriate law enforcement agencies.           #
+#################################################################\" > /etc/issue
+
+echo \"Banner /etc/issue.net
+Port 22
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+SyslogFacility AUTHPRIV
+AuthorizedKeysFile	.ssh/authorized_keys
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+UsePAM yes
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+Subsystem	sftp	/usr/libexec/openssh/sftp-server
+AllowAgentForwarding no
+X11Forwarding no
+UseDNS no
+TCPKeepAlive no
+PermitRootLogin yes
+MaxSessions 2
+MaxAuthTries 3
+LogLevel verbose
+Compression no
+ClientAliveCountMax 2
+AllowTcpForwarding no\" > /etc/ssh/sshd_config" >> /mnt/Security.sh
+
+echo -e '\e[32m=> \e[94m chmod 777 /mnt/AutoConfig.sh\e[39m'
+chmod 777 /mnt/Security.sh
+echo -e '\e[32m=> \e[94m Starting AutoConfig.sh for i3 in chroot\e[39m'
+arch-chroot /mnt ./Security.sh
+
+echo -e '\e[32m=> \e[94mRemoving AutoInstall2.sh\e[39m'
+rm -Rf /mnt/AutoInstall2.sh
+rm -Rf /mnt/Security.sh
+rm -Rf /mnt/AutoConfig.sh
 
 echo -e '\e[32m=> \e[94m Unmounting /mnt\e[39m'
 umount -R /mnt #Unmount every partitions
