@@ -119,5 +119,5 @@ smart_gaps on
 smart_borders on
 
 for_window [class="^.*"] border pixel 1
-exec feh --bg-scale /root/.config/bg2.png
+exec feh --bg-scale /root/.config/bg.jpg
 exec setxkbmap fr

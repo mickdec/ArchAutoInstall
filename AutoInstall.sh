@@ -13,7 +13,7 @@ I3="YES"
 DISKTYPE="SDA"
 
 #Base paquets for Arch
-PACKETS="base linux wpa_supplicant linux-firmware sudo nano wget dhcpcd grub openssh firefox"
+PACKETS="base linux linux_firmware wpa_supplicant sudo nano wget dhcpcd grub openssh firefox"
 echo -e 'If you want a faster installation, start this script with \e[94m-GONNAGOFAST \e[32margument.\e[39m'
 
 #Internet check fonction (like is name says)
@@ -361,10 +361,10 @@ fi
 if [[ "$VARTYPE" == "UEFI" ]]
 then
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt $PACKETS efibootmgr #Installing Linux and all additionnal packages to /
+        pacstrap -K /mnt $PACKETS efibootmgr #Installing Linux and all additionnal packages to /
 else
         echo -e '\e[32m=> \e[94m Installing Linux and all additionnal packages to /\e[39m'
-        pacstrap /mnt $PACKETS #Installing Linux and all additionnal packages to /
+        pacstrap -K /mnt $PACKETS #Installing Linux and all additionnal packages to /
 fi
 
 echo -e '\e[32m=> \e[94m Generate fstab\e[39m'
