@@ -2,30 +2,31 @@ loadkeys /usr/share/kbd/keymaps/i386/azerty/fr-latin9.map.gz
 timedatectl set-ntp true
 timedatectl set-timezone Europe/Paris
 timedatectl
-(
-echo o
-echo n
-echo
-echo
-echo +512M
-echo t
-echo ef
-echo n
-echo
-echo
-echo +5G
-echo t
-echo 2
-echo 82
-echo n
-echo
-echo
-echo 
-echo t
-echo 3
-echo 83
-echo w
-) | sudo fdisk --wipe-partitions always /dev/nvme0n1
+# (
+# echo o
+# echo n
+# echo
+# echo
+# echo +512M
+# echo t
+# echo ef
+# echo n
+# echo
+# echo
+# echo +5G
+# echo t
+# echo 2
+# echo 82
+# echo n
+# echo
+# echo
+# echo 
+# echo t
+# echo 3
+# echo 83
+# echo w
+# ) | sudo fdisk --wipe-partitions always /dev/nvme0n1
+sudo fdisk --wipe-partitions always /dev/nvme0n1
 cryptsetup -q -v --type luks1 -c aes-xts-plain64 -s 512 --hash sha512 -i 5000 --use-random luksFormat "/dev/nvme0n1p3" #Encrypt /root
 cryptsetup luksOpen "/dev/nvme0n1p3" c_3
 mkfs.fat -F32 "/dev/nvme0n1p1"
