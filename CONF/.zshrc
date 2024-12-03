@@ -22,3 +22,4 @@ alias minecraft="bash -c 'minecraft-launcher &'; exit"
 alias wireshark="bash -c 'wireshark &'; exit"
 alias hdmi_on="xrandr --output HDMI-1-1 --auto --left-of eDP-1"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+clear
