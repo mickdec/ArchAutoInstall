@@ -56,7 +56,7 @@ passwd
 grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB
 sed -i 's/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/g' /etc/default/grub
 sed -i 's/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks cryptodisk\"/g' /etc/default/grub
-GUIDMAPPER=$(blkid | grep ^"$PARTITION3" | awk -F "\"" '{print $2}') #Get device GUID
+GUIDMAPPER=$(blkid | grep /dev/nvme0n1p3 | awk -F "\"" '{print $2}') #Get device GUID
 sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDMAPPER\"':c_3 root=\/dev\/mapper\/c_3 crypto=whirlpool:aes-xts-plain64:512:0: apparmor=1 lsm=lockdown,yama,apparmor security=selinux selinux=1\"/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg #Create grub config file
 exit" >> /mnt/AutoInstall2.sh
