@@ -61,7 +61,7 @@ sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID='\"\$GUIDM
 grub-mkconfig -o /boot/grub/grub.cfg #Create grub config file
 exit" >> /mnt/AutoInstall2.sh
 
-echo "pacman --noconfirm -Sy firefox linux-headers feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk" >> /mnt/AutoConfig.sh
+echo "pacman --noconfirm -Sy firefox linux-headers feh which zsh git apparmor rxvt-unicode xorg-xinit xorg-server xorg-setxkbmap i3-gaps i3status xorg-fonts-type1 ttf-dejavu gsfonts sdl_ttf ttf-bitstream-vera ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk xrandr-xorg flameshot" >> /mnt/AutoConfig.sh
 echo "echo \"[Unit]
 Description=startx automatique pour l'utilisateur %I
 After=graphical.target systemd-user-sessions.service

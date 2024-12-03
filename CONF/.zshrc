@@ -15,11 +15,13 @@ alias ll="ls -al"
 alias discord="bash -c 'discord --no-sandbox &'; exit"
 alias virtualbox="bash -c 'virtualbox &'; exit"
 alias burpsuite="bash -c 'burpsuite &'; exit"
-alias code="bash -c '/usr/share/vscodium/codium --no-sandbox $1 &'; exit"
+alias code="bash -c '/usr/share/vscodium/codium --no-sandbox --user-data-dir /root/.vscodium $1 &'; exit"
 alias filezilla="filezilla &"
 alias steam="bash -c 'steam &'"
 alias minecraft="bash -c 'minecraft-launcher &'; exit"
 alias wireshark="bash -c 'wireshark &'; exit"
 alias hdmi_on="xrandr --output HDMI-1-1 --auto --left-of eDP-1"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+killall flameshot
+bash -c 'flameshot &'
 clear
