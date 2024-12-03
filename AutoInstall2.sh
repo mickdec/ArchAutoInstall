@@ -197,5 +197,5 @@ rm -Rf /mnt/AutoInstall2.sh
 rm -Rf /mnt/Security.sh
 rm -Rf /mnt/AutoConfig.sh
 
-umount -R /mnt
-shutdown now
+#umount -R /mnt
+#shutdown now
